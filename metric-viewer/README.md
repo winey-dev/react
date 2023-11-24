@@ -1,70 +1,27 @@
-# Getting Started with Create React App
+# 목표
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- append 버튼 클릭시 Query Box 추가
+- remove 버튼 클릭시 해당 Query Box 삭제
+  : 내부 값은 정상인데 re-render가 되지 않는 문제
+  - 1(a), 2(b), 3(c) 에서 2 remove 버튼 클릭으로 삭제 시 1(a), 2(c) 로 보여지는 문제
+    : uuid 값과 useEffect를 통해 uuid 값이 변경 될 경우 select value를 다시 re-render 하도록 변경
 
-## Available Scripts
+## 고려 사항
 
-In the project directory, you can run:
+Category, SubCategory Select Box를 출력
+Category 변경시 SubCategoryList가 변경 되야함
+SubCategory 선택시 Tag 목록이 변경 되야함
 
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- 특정 우선순위가 존재하는 Tag 목록을 전달 받아 Select 컴포넌트가 추가 되야 한다.
+  - 만약 입력받은 순서는 (app_name, container_name, \_field, namespace, pod_name) 라고 가정하면
+  - 내부 정렬 로직에 의해 (item_name<\_field>, namespace, app_name, pod_name, container_name) 순으로 select 컴포넌트를 생성
+- 우선순위가 높은 Select 박스에 선택된 values가 변경되면 그보다 우선순위가 낮은 Select 컴포넌트의 List가 변경 되야함
+  - namespace Select 컴포넌트는 app_name Select 컴포넌트 보다 우선순의를 가지고 있다.
+  - namespace의 Select 컴포넌트의 ValueList {YUDORI, YADORI} 가 존재 한다.
+  - app_name의 Select 컴포넌의 ValueList {YUDORI-API-SERVER, YUDORI-CORE, YUDORI-MARIADB, YADORI-MARIADB, YADORI-APP} 으로 구성 되어 있다.
+  - namespace의 Select 컴포넌트의 Value가 모두 선택 되어 있으면 app_name Select 컴포넌트의 ValueList는 {YUDORI-API-SERVER, YUDORI-CORE, YUDORI-MARIADB, YADORI-MARIADB, YADORI-APP} 이다.
+  - namespace의 Select 컴포넌트의 Value로 YUDORI 만 선택 되어 있으면 app_name Select 컴포넌트의 ValueList는 {YUDORI-API-SERVER, YUDORI-CORE, YUDORI-MARIADB}
+  - namespace의 Select 컴포넌트의 Value로 YADORI 만 선택 되어 있으면 app_name Select 컴포넌트의 ValueList는 {YADORI-MARIADB, YADORI-APP}
+  - 만약 namespace의 Select 컴포넌트의 Value로 모든 namespace가 선택되어 있고 app_name의 Select 컴포넌트의 Value는 {YUDORI-MARIADB, YADORI-MARIADB} 선택 되어있다고 가정 할 때
+  - namespace Select 컴포넌트의 Value가 YADORI 만 선택 하도록 변경되면 app_name에서 YUDORI-MARIADB는 제외 되고 YADORI-MARIADB 남아 있어야 해.
+  - 이런 중첩 구조가 Tag개수만큼 모두 이루어져 있음

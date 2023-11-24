@@ -10,7 +10,6 @@ const StaticForm = (props) => {
 
   const [value, setValue] = useState(queryBox.get(id));
 
-  console.log(queryBoxIndex, queryBox);
   const onItemChange = (e) => {
     if (e.target.value) {
       setValue(e.target.value);
@@ -21,7 +20,7 @@ const StaticForm = (props) => {
   useEffect(() => {
     setValue(queryBox.get(id));
   }, [uuid]);
-  //console.log("value", queryBox.get(id));
+
   return (
     <div>
       {menuList && (
