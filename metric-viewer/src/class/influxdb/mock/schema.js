@@ -213,6 +213,14 @@ class Schema {
       return null;
     }
   }
+
+  GetSchema() {
+    return this.schema
+  }
+
+  getItemListWithSelectItem(index,selectItem) {
+    // { "name": "category", "multiple": false, values: ["resource"] },
+  }
 }
 
 export default Schema;

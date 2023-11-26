@@ -11,8 +11,8 @@ function App() {
   const [inputQueryBoxes, setInputQueryBoxes] = useState([
     new Map()
       .set("id", uuid())
-      .set("category", "resource")
-      .set("subCategory", "node"),
+      // .set("category", "resource")
+      // .set("subCategory", "node"),
   ]);
 
   const schema = new Schema();
@@ -22,8 +22,8 @@ function App() {
       ...inputQueryBoxes,
       new Map()
         .set("id", uuid())
-        .set("category", "resource")
-        .set("subCategory", "node"),
+        // .set("category", "resource")
+        // .set("subCategory", "node"),
     ]);
   };
 
@@ -82,17 +82,17 @@ function App() {
               <QueryBox
                 id={inputQueryBox.get("id")}
                 client={schema}
-                queryBox={inputQueryBox}
                 onQueryBoxChange={handleOnQueryBoxChange}
-                index={index}
+                boxIndex={index}
               />
-              <IconButton
+              {index !== 0 && (
+                <IconButton
                 id={inputQueryBox.get("id")}
                 onClick={() => removeOnClick(index)}
               >
-                {" "}
-                <RemoveIcon />{" "}
+                <RemoveIcon />
               </IconButton>
+              )}
             </div>
           ))}
         </Box>

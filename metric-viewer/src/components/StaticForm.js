@@ -1,14 +1,14 @@
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { useEffect, useState } from "react";
-import QueryBox from "./QueryBox";
-import { CollectionsOutlined } from "@mui/icons-material";
+
 const StaticForm = (props) => {
   const { uuid, id, name, client, queryBox, queryBoxIndex, onQueryBoxChange } =
     props;
 
   const menuList = client.getListWithMap(id, queryBox);
 
-  const [value, setValue] = useState(queryBox.get(id));
+  
+  const [value, setValue] = useState(menuList[0].name);
 
   const onItemChange = (e) => {
     if (e.target.value) {
