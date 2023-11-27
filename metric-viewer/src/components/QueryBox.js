@@ -12,7 +12,7 @@ const QueryBox = (props) => {
   const [subCategoryName, setSubCategoryName] = useState("");
   const [tagNameList, setTagNameList] = useState([]);
   const [tagValueList, setTagValueList] = useState([]);
-  const [tagSelectValues, setTagSelectValues] = useState([]);
+  const [tagSelectValues, setTagSelectValues] = useState([['a','b']]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -31,7 +31,6 @@ const QueryBox = (props) => {
       setSubCategoryList(response);
       setSubCategoryName(response[0]);
       onQueryBoxChange("ADD", boxIndex, "subCategory", response[0]);
-      console.log("subactegoryList", response);
     };
     fetch();
   }, [categoryName]);
@@ -46,8 +45,12 @@ const QueryBox = (props) => {
 
   useEffect(() => {
     const fetch = async () => {
-      const response = await client.GetTagValueList(categoryName, subCategoryName, tagNameList);
-      setTagValueList(response);
+      const values = [];
+      for (let i = 0; i < tagNameList.length; i++) {
+        const response = await client.GetTagValues(categoryName, subCategoryName, tagNameList[i]);
+        values.push(response);
+      }
+       setTagValueList(values);
     };
     fetch();
   }, [tagNameList]);
@@ -56,7 +59,6 @@ const QueryBox = (props) => {
     if (e.target.value) {
       setCategoryName(e.target.value);
       onQueryBoxChange("ADD", index, "category", e.target.value);
-    } else {
     }
   };
 
@@ -64,7 +66,6 @@ const QueryBox = (props) => {
     if (e.target.value) {
       setSubCategoryName(e.target.value);
       onQueryBoxChange("ADD", index, "subCategory", e.target.value);
-    } else {
     }
   };
 
@@ -73,7 +74,14 @@ const QueryBox = (props) => {
     const values = e.target.value;
     copyValues[index] = typeof values === "string" ? values.split(",") : values;
     setTagSelectValues(copyValues);
+    onQueryBoxChange("UPDATE", boxIndex, tagNameList[index], typeof values === "string" ? values.split(",") : values)
   };
+
+
+
+  const SetTagName = (value) => {
+    return value === "_field" ? "item_name" : value
+  }
 
   return (
     <div style={{ display: "flex" }}>
@@ -119,11 +127,11 @@ const QueryBox = (props) => {
         </FormControl>
       )}
 
-      {tagNameList &&
+      {tagNameList && tagValueList && 
         tagNameList.map((value, index) => (
           <FormControl sx={{ m: 1, minWidth: 140 }}>
-            <InputLabel id={value + "-label-id"}>{value}</InputLabel>
-            <Select labelId={value + "-label-id"} id={value + "-id"} onChange={(e) => onTagValuesChange(e, index)} autoWidth label={value}>
+            <InputLabel id={value + "-label-id"}>{SetTagName(value)}</InputLabel>
+            <Select labelId={value + "-label-id"} id={value + "-id"} multiple value={} onChange={(e) => onTagValuesChange(e, index)} autoWidth label={SetTagName(value)}>
               {tagValueList[index] &&
                 tagValueList[index].map((item) => (
                   <MenuItem key={item} value={item}>
@@ -139,4 +147,3 @@ const QueryBox = (props) => {
 
 export default QueryBox;
 
-// category 선택
