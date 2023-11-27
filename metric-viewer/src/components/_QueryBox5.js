@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
-//  QueryBox4 ->를 async를 사용하여 데이터를 받아오는 과정으로 변경이 목표
+//  QueryBox4 ->를 async를 사용하여 데이터를 받아오는 과정으로 변경이 목표 완료
 
 const QueryBox = (props) => {
   const { client, queryBox, onQueryBoxChange, boxIndex } = props;
@@ -16,7 +16,7 @@ const QueryBox = (props) => {
 
   useEffect(() => {
     const fetch = async () => {
-      const response = await client.GetCategoryList();
+      const response = await client.AsyncGetCategoryList();
       setCategoryList(response);
       setCategoryName(response[0]);
       onQueryBoxChange("ADD", boxIndex, "category", response[0]);
@@ -27,7 +27,7 @@ const QueryBox = (props) => {
 
   useEffect(() => {
     const fetch = async () => {
-      const response = await client.GetSubCategoryList(categoryName);
+      const response = await client.AsyncGetSubCategoryList(categoryName);
       setSubCategoryList(response);
       setSubCategoryName(response[0]);
       onQueryBoxChange("ADD", boxIndex, "subCategory", response[0]);
@@ -38,7 +38,7 @@ const QueryBox = (props) => {
 
   useEffect(() => {
     const fetch = async () => {
-      const response = await client.GetTagNameList(categoryName, subCategoryName);
+      const response = await client.AsyncGetTagNameList(categoryName, subCategoryName);
       setTagNameList(response);
     };
     fetch();
@@ -46,7 +46,7 @@ const QueryBox = (props) => {
 
   useEffect(() => {
     const fetch = async () => {
-      const response = await client.GetTagValueList(categoryName, subCategoryName, tagNameList);
+      const response = await client.AsyncGetTagValueList(categoryName, subCategoryName, tagNameList);
       setTagValueList(response);
     };
     fetch();
@@ -123,7 +123,15 @@ const QueryBox = (props) => {
         tagNameList.map((value, index) => (
           <FormControl sx={{ m: 1, minWidth: 140 }}>
             <InputLabel id={value + "-label-id"}>{value}</InputLabel>
-            <Select labelId={value + "-label-id"} id={value + "-id"} onChange={(e) => onTagValuesChange(e, index)} autoWidth label={value}>
+            <Select
+              labelId={value + "-label-id"}
+              id={value + "-id"}
+              multiple
+              value=""
+              onChange={(e) => onTagValuesChange(e, index)}
+              autoWidth
+              label={value}
+            >
               {tagValueList[index] &&
                 tagValueList[index].map((item) => (
                   <MenuItem key={item} value={item}>

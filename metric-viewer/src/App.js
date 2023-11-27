@@ -6,24 +6,24 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import QueryBox from "./components/QueryBox";
 import Schema from "./class/influxdb/mock/schema";
 import uuid from "react-uuid";
+import Client from "./class/influxdb/influxdb";
 
 function App() {
   const [inputQueryBoxes, setInputQueryBoxes] = useState([
-    new Map()
-      .set("id", uuid())
-      // .set("category", "resource")
-      // .set("subCategory", "node"),
+    new Map().set("id", uuid()),
+    // .set("category", "resource")
+    // .set("subCategory", "node"),
   ]);
 
   const schema = new Schema();
+  const client = new Client();
 
   const appendOnClick = () => {
     setInputQueryBoxes([
       ...inputQueryBoxes,
-      new Map()
-        .set("id", uuid())
-        // .set("category", "resource")
-        // .set("subCategory", "node"),
+      new Map().set("id", uuid()),
+      // .set("category", "resource")
+      // .set("subCategory", "node"),
     ]);
   };
 
@@ -74,24 +74,12 @@ function App() {
           // }}
         >
           {inputQueryBoxes.map((inputQueryBox, index) => (
-            <div
-              key={index}
-              id={inputQueryBox.get("id")}
-              style={{ display: "flex", padding: 0 }}
-            >
-              <QueryBox
-                id={inputQueryBox.get("id")}
-                client={schema}
-                onQueryBoxChange={handleOnQueryBoxChange}
-                boxIndex={index}
-              />
+            <div key={inputQueryBox.get("id")} id={inputQueryBox.get("id")} style={{ display: "flex", padding: 0 }}>
+              <QueryBox id={inputQueryBox.get("id")} client={client} onQueryBoxChange={handleOnQueryBoxChange} boxIndex={index} />
               {index !== 0 && (
-                <IconButton
-                id={inputQueryBox.get("id")}
-                onClick={() => removeOnClick(index)}
-              >
-                <RemoveIcon />
-              </IconButton>
+                <IconButton id={inputQueryBox.get("id")} onClick={() => removeOnClick(index)}>
+                  <RemoveIcon />
+                </IconButton>
               )}
             </div>
           ))}
@@ -102,9 +90,7 @@ function App() {
           <div style={{ flexGrow: 1 }}>
             <Button onClick={() => appendOnClick()}>Append</Button>
           </div>
-          <div
-            style={{ flexGrow: 1, display: "flex", justifyContent: "right" }}
-          >
+          <div style={{ flexGrow: 1, display: "flex", justifyContent: "right" }}>
             <Button name="run" onClick={handleOnSubmit}>
               Run
             </Button>

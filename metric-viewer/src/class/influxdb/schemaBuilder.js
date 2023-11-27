@@ -3,7 +3,12 @@ class SchemaBuilder {
     this.schema = new Schema();
   }
 
-  get;
+  getSchemaInfoAll() {}
+  getCategoryList() {}
+  getSubCategoryList() {}
+  getItemList() {}
+  getTagNameList() {}
+  getTagValueList() {}
 }
 
 export default SchemaBuilder;

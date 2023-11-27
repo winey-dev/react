@@ -3,7 +3,7 @@
 - append 버튼 클릭시 Query Box 추가
 - remove 버튼 클릭시 해당 Query Box 삭제
   : 내부 값은 정상인데 re-render가 되지 않는 문제
-  - 1(a), 2(b), 3(c) 에서 2 remove 버튼 클릭으로 삭제 시 1(a), 2(c) 로 보여지는 문제
+  - 1(a), 2(b), 3(c) 에서 2 remove 버튼 클릭으로 삭제 시 1(a), 2(b) 로 보여지는 문제 (내부 데이터는 3(c) 가 맞음)
     : uuid 값과 useEffect를 통해 uuid 값이 변경 될 경우 select value를 다시 re-render 하도록 변경
 
 ## 고려 사항

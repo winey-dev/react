@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import DynamicForm from "./DynamicForm";
-import StaticForm from "./StaticForm";
+import DynamicForm from "./_DynamicForm";
+import StaticForm from "./_StaticForm";
 const QueryBox = (props) => {
   const { id, client, queryBox, onQueryBoxChange, index } = props;
   console.log(index, queryBox);
@@ -16,7 +16,7 @@ const QueryBox = (props) => {
         queryBoxIndex={index}
         onQueryBoxChange={onQueryBoxChange}
       />
-      
+
       <StaticForm
         uuid={id}
         id="subCategory"
