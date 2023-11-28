@@ -86,6 +86,9 @@ class Client {
     for (let i = 0 ; i < index ; i ++) {
       console.log(options[i].name, options[i].selectedValues)
     }
+
+    console.log("fixed ")
+
     if (options[index-1].selectedValues[0] === 'resource') {
       return ["container", "network", "node"]
     } 
