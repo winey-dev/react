@@ -75,7 +75,7 @@ function App() {
         >
           {inputQueryBoxes.map((inputQueryBox, index) => (
             <div key={inputQueryBox.get("id")} id={inputQueryBox.get("id")} style={{ display: "flex", padding: 0 }}>
-              <QueryBox id={inputQueryBox.get("id")} client={client} onQueryBoxChange={handleOnQueryBoxChange} boxIndex={index} />
+              <QueryBox id={inputQueryBox.get("id")} client={client} onQueryBoxChange={handleOnQueryBoxChange} queryIndex={index} />
               {index !== 0 && (
                 <IconButton id={inputQueryBox.get("id")} onClick={() => removeOnClick(index)}>
                   <RemoveIcon />
@@ -83,7 +83,7 @@ function App() {
               )}
             </div>
           ))}
-        </Box>
+        </Box>   
 
         <Divider />
         <div style={{ display: "flex", padding: 15 }}>
