@@ -1,108 +1,67 @@
 class QueryBuilder {
     constructor() {
-        this.items = [];
-        this.filters = [];
-        this.groupTagNames = [];
+        this.fluxQuery = ''
     }
 
-    Period(period) {
-        this.period = period;
-        return this;
+    from(bucket) {
+        this.fluxQuery += `from(bucket: "${bucket}")\n`
+        return this
     }
 
-    Range(start, end) {
-        this.startTime = start;
-        this.endTime = end;
-        return this;
+    range(start, end) {
+        this.fluxQuery += ` |> range(start: ${start}, stop: ${end})\n`
+        return this
+    }
+    measurment(measurment) {
+        this.fluxQuery += ` |> filter(fn: (r) => (r["_measurement"] == "${measurment}"))\n`
+        return this
     }
 
-    Category(categoryName) {
-        this.categoryName = categoryName;
-        return this;
+    filter(tagName, tagValues) {
+        if (!tagValues || !tagValues.length) {
+            return this
+        }
+        this.fluxQuery += ` |> filter(fn: (r) => (`
+        for (let i = 0; i < tagValues.length; i++) {
+            this.fluxQuery += `r["${tagName}"] == "${tagValues[i]}"`
+            if (i !== tagValues.length - 1) {
+                this.fluxQuery += " or "
+            }
+        }
+        this.fluxQuery += `))\n`
+        return this
     }
 
-    SubCategory(subCategoryName) {
-        this.subCategoryName = subCategoryName;
-        return this;
+    keepColumns(columns) {
+        this.fluxQuery += ` |> keep(columns: ["${columns.join(",")}"])\n`
+        return this
+    }
+    group() {
+        this.fluxQuery += ` |> group()\n`
+        return this
     }
 
-    Items(items) {
-        this.items = items;
-        return this;
+    distinct(name) {
+        this.fluxQuery += ` |> distinct(column: "${name}")\n`
+        return this
     }
 
-    Filter(filterObject) {
-        this.filters.push(filterObject)
-        return this;
+    limit(n) {
+        this.fluxQuery += ` |> limit(n: ${n})\n`
+        return this
     }
 
-    Group(groupObject) {
-        this.groupTagNames = groupObject.tagNames;
-        this.fn = groupObject.fnName;
-        return this;
+    sort() {
+        this.fluxQuery += ` |> sort()\n`
+        return this
     }
 
-    Yield(yieldName) {
-        this.yield = yieldName;
-        return this;
+    yield(name) {
+        this.fluxQuery += ` |> yield(name: "${name}")`
+        return this
     }
-
     Builder() {
-        if (this.period === '' || this.categoryName === '' || this.subCategoryName === '' || this.items.length === 0 || this.yield === '') {
-            throw new Error("required field check (category,subcategory,items)");
-        }
-
-        var query = "";
-        query += "from(bucket: \"" + this.period + "\")\n"
-
-
-        if (!this.startTime || !this.endTime) {
-            let now = new Date();
-            this.endTime = now;
-            this.startTime = new Date(this.endTime)
-            this.startTime.setMinutes(this.endTime.getMinutes() - 5);
-        }
-    
-        query += "  |> range(start: " + this.startTime.toISOString()+ ", stop: " + this.endTime.toISOString() + ")\n"
-
-
-        query += "  |> filter(fn: (r) => r._measurement == \"" + this.categoryName + "_" + this.subCategoryName + "\")\n"
-        query += "  |> filter(fn: (r) => "
-
-        for (let i = 0; i < this.items.length; i++) {
-           query += "r._field == \"" + this.items[i] + "\""
-           if (i !== this.items.length-1) {
-            query += " or "
-           }
-        }
-        query += ")"
-
-        for (let i = 0; i < this.filters.length; i++) {
-            query += "  |> filter(fn: (r) => "
-            for (let j = 0; j < this.filters[i].tagValues.length; j++) {
-                query += "r." + this.filters[i].tagName + "  == \"" + this.filters[i].tagValues[j] + "\""
-                if (j !== this.filters[i].tagValues.length - 1) {
-                    query += " or "
-                }
-            }
-            query += ")\n"
-        }
-
-        if (this.groupTagNames.length !== 0 ) {
-            query += "  |> group(columns: [\"_measurement\", \"_time\", \"_field\", "
-            for (let i = 0; i < this.groupTagNames.length; i++) {
-                query += "\"r." + this.groupTagNames[i] + "\""
-                if (i !== this.groupTagNames.length - 1) {
-                    query += ", "
-                }
-            }
-            query += ")\n"
-            query += "  |> " + this.fn + "()\n"
-        }
-
-        query += "  |> yield(name: \"" + this.yield + "\")\n" 
-
-        return query
+        return this.fluxQuery
     }
 }
 

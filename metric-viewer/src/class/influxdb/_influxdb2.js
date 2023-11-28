@@ -116,6 +116,7 @@ class Client {
       throw new Error("get sub category failed.");
     }
   }
+  
   async GetTagNameList(categoryName, subCategoryName) {
     const tagNameList = [];
     const measurement = categoryName.concat("_", subCategoryName);

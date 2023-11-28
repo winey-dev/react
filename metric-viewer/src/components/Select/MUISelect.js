@@ -4,14 +4,13 @@ import { FormControl, Select, MenuItem, ListItemText, Checkbox, InputLabel } fro
 const MUISelect = (props) => {
   // props로 전달 받은 내용
   const {index, selectOption, onChangeEvent} = props;
-
- 
+  const name = selectOption.name === "_field" ? "item_name" : selectOption.name
   const options = selectOption.values.map((item, index) => {
     return (
       <MenuItem key={index} value={item}>
          {selectOption.multiple ? 
          <>
-          <Checkbox checked={selectOption.values.indexOf(item) > -1} />
+          <Checkbox checked={selectOption.selectedValues.indexOf(item) > -1} />
             <ListItemText primary={item} />
          </>:
          <>
@@ -24,13 +23,12 @@ const MUISelect = (props) => {
 
   return (
         <FormControl sx={{ m: 1, minWidth: 140 }}>
-          <InputLabel id={selectOption.name + "-label-id"}>{selectOption.name}</InputLabel>
+          <InputLabel id={name + "-label-id"}>{name}</InputLabel>
           <Select
-            labelId={selectOption.name + "-label-id"}
-            id={selectOption.name + "-id"}
+            labelId={name + "-label-id"}
+            id={name + "-id"}
             onChange={(e) => onChangeEvent(e.target.value, index)}
-            autoWidth
-            label={selectOption.name}
+            label={name}
             multiple={selectOption.multiple}
             value={selectOption.selectedValues}
             renderValue={(selected) => selected.join(", ")}

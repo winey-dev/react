@@ -1,12 +1,12 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import { Box, Button, Container, Divider } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import RemoveIcon from "@mui/icons-material/Remove";
 import QueryBox from "./components/QueryBox";
-import Schema from "./class/influxdb/mock/schema";
 import uuid from "react-uuid";
 import Client from "./class/influxdb/influxdb";
+import QueryBuilder from "./class/influxdb/querybuilder";
 
 function App() {
   const [inputQueryBoxes, setInputQueryBoxes] = useState([
@@ -15,7 +15,7 @@ function App() {
     // .set("subCategory", "node"),
   ]);
 
-  const schema = new Schema();
+
   const client = new Client();
 
   const appendOnClick = () => {
@@ -35,24 +35,25 @@ function App() {
     }
   };
 
-  const handleOnSubmit = (event) => {
-    event.preventDefault();
-    console.log("input query boxes", inputQueryBoxes);
+  const handleOnQueryBoxChange = (options, index) => {
+    const changeBoxes = [...inputQueryBoxes];
+    changeBoxes[index].set("query", options) 
+    setInputQueryBoxes(changeBoxes);
   };
 
-  const handleOnQueryBoxChange = (type, index, key, value) => {
-    const changeBoxes = [...inputQueryBoxes];
-    if (type === "ADD" || type === "UPDATE") {
-      changeBoxes[index].set(key, value);
-    } else if (type === "DELETE") {
-      changeBoxes[index].delete(key);
-    } else if (type === "CLEAR") {
-      changeBoxes[index].clear();
-    } else {
-      console.log("not support type: ", type);
-      return;
+  const handleOnSubmit = (event) => {
+    event.preventDefault();
+   
+    const fetch = async() => {
+      for (let i = 0 ; i < inputQueryBoxes.length; i++) {
+        const query = client.makeQuery("query_".concat(i), inputQueryBoxes[i].get("query"))
+      
+       
+        console.log(query)
+   
+      }
     }
-    setInputQueryBoxes(changeBoxes);
+    fetch();
   };
 
   return (
@@ -75,12 +76,16 @@ function App() {
         >
           {inputQueryBoxes.map((inputQueryBox, index) => (
             <div key={inputQueryBox.get("id")} id={inputQueryBox.get("id")} style={{ display: "flex", padding: 0 }}>
-              <QueryBox id={inputQueryBox.get("id")} client={client} onQueryBoxChange={handleOnQueryBoxChange} queryIndex={index} />
-              {index !== 0 && (
+              <QueryBox 
+                id={inputQueryBox.get("id")} 
+                client={client} 
+                onQueryBoxChange={handleOnQueryBoxChange} 
+                queryIndex={index} />
+             
                 <IconButton id={inputQueryBox.get("id")} onClick={() => removeOnClick(index)}>
                   <RemoveIcon />
                 </IconButton>
-              )}
+              
             </div>
           ))}
         </Box>   
