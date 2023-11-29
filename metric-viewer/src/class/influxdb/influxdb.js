@@ -20,6 +20,13 @@ const SortNumber = (str) => {
   return 9999;
 };
 
+const requiredField = (name) => {
+  const required = ["_field", "node_name", "namespace", "app_name"]
+  if (required.indexOf(name) > -1 ) {
+    return false;
+  }
+  return true;
+}
 const sortField = (a,b) => {
   var ap = SortNumber(a);
   var bp = SortNumber(b);
@@ -246,16 +253,16 @@ class Client {
     const categoryList = await this.GetCategoryList()
     if (!categoryName && !subCategoryName) {
       const subCategoryList = await this.GetSubCategoryList(categoryList[0])
-      options.push({name: "category", multiple: false, values: [...categoryList], selectedValues: [categoryList[0]]})
-      options.push({name: "subcategory", multiple: false, values: [...subCategoryList], selectedValues: [subCategoryList[0]]})
+      options.push({name: "category", multiple: false, values: [...categoryList], selectedValues: [categoryList[0]], detailed: false})
+      options.push({name: "subcategory", multiple: false, values: [...subCategoryList], selectedValues: [subCategoryList[0]], detailed: false})
     } else if (categoryName && !subCategoryName) {
       const subCategoryList = await this.GetSubCategoryList(categoryName)
-      options.push({name: "category", multiple: false, values: [...categoryList], selectedValues: [categoryName]})
-      options.push({name: "subcategory", multiple: false, values: [...subCategoryList], selectedValues: [subCategoryList[0]]})
+      options.push({name: "category", multiple: false, values: [...categoryList], selectedValues: [categoryName], detailed: false})
+      options.push({name: "subcategory", multiple: false, values: [...subCategoryList], selectedValues: [subCategoryList[0]], detailed: false})
     } else if (categoryName && subCategoryName) {
       const subCategoryList = await this.GetSubCategoryList(categoryName)
-      options.push({name: "category", multiple: false, values: [...categoryList], selectedValues: [categoryName]})
-      options.push({name: "subcategory", multiple: false, values: [...subCategoryList], selectedValues: [subCategoryName]})
+      options.push({name: "category", multiple: false, values: [...categoryList], selectedValues: [categoryName], detailed: false})
+      options.push({name: "subcategory", multiple: false, values: [...subCategoryList], selectedValues: [subCategoryName], detailed: false})
     }
 
     const tagNameList = await this.GetTagNameList(options[0].selectedValues[0], options[1].selectedValues[0])
@@ -263,13 +270,15 @@ class Client {
     
    
     for (let i = 0 ; i < tagNameList.length; i++) {
-      options.push({name: tagNameList[i], multiple: true})
+      options.push({name: tagNameList[i], multiple: true, values:[], selectedValues:[], detailed: false})
     }
     
     for (let i = 2 ; i < options.length; i++ ) {
+      
       const result =  await this.GetOptions(options, i)
       options[i].values = [...result]
       options[i].selectedValues = []
+      options[i].detailed = requiredField(options[i].name)
     }
     //console.log(options)
     return options
@@ -282,7 +291,7 @@ class Client {
 
     builder
     .from("realtime")
-    .range("-1h", "now()")
+    .range("-30m", "now()")
     .measurment(categoryName + "_" + subCategoryName)
     
     for (let i = 2 ; i < options.length; i++) {
@@ -290,6 +299,16 @@ class Client {
     }
     builder.yield(name)
     return builder.Builder()
+  }
+
+  async getMetricData(query) {
+    const result = []
+    const queryAPI = this.client.getQueryApi(this.org);
+    for await (const { values, tableMeta } of queryAPI.iterateRows(query)) {
+      const o = tableMeta.toObject(values);
+      result.push(o)
+    }
+    return result
   }
 }
 

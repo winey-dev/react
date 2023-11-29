@@ -21,8 +21,20 @@ const MUISelect = (props) => {
     )
   })
 
+  const maxLength = () => {
+    var length = name.length;
+    for (let i = 0 ; i < selectOption.values.length; i++)
+    if (length < selectOption.values[i].length) {
+        length = selectOption.values[i].length
+    }
+    if (selectOption.multiple) {
+      return length * 14
+    }
+    return length * 10
+  }
+  
   return (
-        <FormControl sx={{ m: 1, minWidth: 140 }}>
+        <FormControl sx={{ m: 1, minWidth: maxLength  }}>
           <InputLabel id={name + "-label-id"}>{name}</InputLabel>
           <Select
             labelId={name + "-label-id"}

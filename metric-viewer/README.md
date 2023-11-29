@@ -25,3 +25,15 @@ SubCategory 선택시 Tag 목록이 변경 되야함
   - 만약 namespace의 Select 컴포넌트의 Value로 모든 namespace가 선택되어 있고 app_name의 Select 컴포넌트의 Value는 {YUDORI-MARIADB, YADORI-MARIADB} 선택 되어있다고 가정 할 때
   - namespace Select 컴포넌트의 Value가 YADORI 만 선택 하도록 변경되면 app_name에서 YUDORI-MARIADB는 제외 되고 YADORI-MARIADB 남아 있어야 해.
   - 이런 중첩 구조가 Tag개수만큼 모두 이루어져 있음
+
+### 남은 문제는 
+  remove 버튼이 커지는 문제... 
+  : div tag로 내부 나누기 (해결)
+  remove 가운데 정렬이 안됨.
+  multi select에서 클릭 할 때 마다 re-render 되는 문제
+  : uuid()를 랜더링 될때 마다 호출하는데 이것을 바꿔보기  (해결)
+  새로 고침을 누를 경우 초기화 되는문제 
+  : useRef 사용해보기 
+### 추가 기능
+  query 추가시 위에 TAP으로 활성화 시키기 ..
+  REQUIRED 필드를 제외하고는 model 창에서 선택하도록 변경 (완성)
