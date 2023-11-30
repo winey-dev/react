@@ -4,6 +4,7 @@ import { Button, Container, Divider } from "@mui/material";
 import QueryBox from "./components/QueryBox";
 import uuid from "react-uuid";
 import Client from "./class/influxdb/influxdb";
+import { LineChart } from '@mui/x-charts/LineChart';
 
 function App() {
   const [inputQueryBoxes, setInputQueryBoxes] = useState([
@@ -44,9 +45,9 @@ function App() {
     const fetch = async () => {
       var query = ''
       for (let i = 0; i < inputQueryBoxes.length; i++) {
-        query+= client.makeQuery("query_".concat(i), inputQueryBoxes[i].get("query"))
+        query += client.makeQuery("query_".concat(i), inputQueryBoxes[i].get("query"))
       }
-    
+
       const response = await client.getMetricData(query)
       setMetricDatas(response)
       console.log(response)
@@ -54,28 +55,28 @@ function App() {
     fetch();
   };
 
-  const [metricDatas, setMetricDatas] = useState([]) 
+  const [metricDatas, setMetricDatas] = useState([])
 
   return (
     <Container>
       <h2>Metric Viewer</h2>
       <Divider />
-      
+
       <form onSubmit={handleOnSubmit}>
 
-          {inputQueryBoxes.map((inputQueryBox, index) => (
-            <div key={inputQueryBox.get("id")} id={inputQueryBox.get("id")} style={{ display: "flex", padding: 0 }}>
-              <QueryBox
-                id={inputQueryBox.get("id")}
-                client={client}
-                onQueryBoxChange={handleOnQueryBoxChange}
-                queryIndex={index} 
-                removeOnClick={removeOnClick}/>
+        {inputQueryBoxes.map((inputQueryBox, index) => (
+          <div key={inputQueryBox.get("id")} id={inputQueryBox.get("id")} style={{ display: "flex", padding: 0 }}>
+            <QueryBox
+              id={inputQueryBox.get("id")}
+              client={client}
+              onQueryBoxChange={handleOnQueryBoxChange}
+              queryIndex={index}
+              removeOnClick={removeOnClick} />
 
-             
-            </div>
-          ))}
-   
+
+          </div>
+        ))}
+
 
         <Divider />
         <div style={{ display: "flex", padding: 15 }}>
@@ -93,11 +94,21 @@ function App() {
         </div>
       </form>
       <div>
-            {metricDatas && metricDatas.map((data, index) => (
-                <div key={index}>{data._time} {data.namespace} {data._value}</div>
-            ))}
+        {metricDatas.labels && metricDatas.dataSets &&
+          <LineChart
+            xAxis={[
+              { scaleType: 'point', data: [...metricDatas.labels] },
+            ]}
+            series={[
+              ...metricDatas.dataSets
+            ]}
+            width={1200}
+            height={650}
+            slotProps={{ legend: { hidden: true } }}
+          />
+        }
       </div>
-     
+
     </Container>
   );
 }

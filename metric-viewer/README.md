@@ -36,4 +36,7 @@ SubCategory 선택시 Tag 목록이 변경 되야함
   : useRef 사용해보기 
 ### 추가 기능
   query 추가시 위에 TAP으로 활성화 시키기 ..
-  REQUIRED 필드를 제외하고는 model 창에서 선택하도록 변경 (완성)
+  detailed option 이름 additional로 변경 
+  각 Query 별로 Group(tag 기준), Merged(mean, sum) 선택 기능 넣기 (detailed옵션에), Graph 선택 (line, area 속성 넣기)
+  RUN QUERY 버튼 왼쪽에 AGGRERGATION 옵션 넣고 (5s, 10s, 20s, 30s) Merged 옵션에 (mean, sum, max, min, frist, last) select 넣고 
+  RUN 버튼 누르면 AGGREGATION 선택 시간 만큼 INTERVAL로 호출되도록 넣고 

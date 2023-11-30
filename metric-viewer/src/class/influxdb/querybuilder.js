@@ -41,6 +41,29 @@ class QueryBuilder {
         return this
     }
 
+    groupColumns(columns) {
+        // |> group(columns: ["_time","_measurement", "_field", "namespace", "app_name", "pod_name"])
+        this.fluxQuery += ` |> group(columns: [`
+        for (let i = 0; i < columns.length; i++) {
+            this.fluxQuery += `"${columns[i]}"`
+            if (i !== columns.length - 1) {
+                this.fluxQuery += ", "
+            }
+        }
+        this.fluxQuery += ` ])\n`
+        return this
+    }
+
+    groupFn(fn) {
+        this.fluxQuery += ` |> ${fn}(column: "_value")\n`
+        return this
+    }
+
+    aggregateWindow(period, fn, createEmpty) {
+        this.fluxQuery += `|> aggregateWindow(every: ${period}, fn: ${fn}, createEmpty: ${createEmpty})`
+        return this
+    }
+
     distinct(name) {
         this.fluxQuery += ` |> distinct(column: "${name}")\n`
         return this

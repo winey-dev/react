@@ -1,8 +1,14 @@
 import { InfluxDB } from "@influxdata/influxdb-client";
-import { BucketsAPI, OrgsAPI } from "@influxdata/influxdb-client-apis";
 import { url, token, org } from "./config";
 import QueryBuilder from "./querybuilder";
-
+const TimeSort = (a, b) => {
+  const aData = new Date(a)
+  const bData = new Date(b)
+  if (aData.getTime() < bData.getTime()) {
+    return -1;
+  }
+  return 0;
+}
 const SortNumber = (str) => {
   const SortMAP = {
     _field: 1,
@@ -22,12 +28,12 @@ const SortNumber = (str) => {
 
 const requiredField = (name) => {
   const required = ["_field", "node_name", "namespace", "app_name"]
-  if (required.indexOf(name) > -1 ) {
+  if (required.indexOf(name) > -1) {
     return false;
   }
   return true;
 }
-const sortField = (a,b) => {
+const sortField = (a, b) => {
   var ap = SortNumber(a);
   var bp = SortNumber(b);
 
@@ -159,35 +165,21 @@ class Client {
   }
 
   async schemaWithSelectOption(selectOptions, index) {
-    // selected = {name, values, selectedValues, }
-    // selectedOptions 이 [option0, option1, option2, option3, option4] 가 존재하고 index가 n이면 
-    // (0 ~ index) 범위 내용으로 (index + 1  ~ selectOptions.length) 까지 반복 작업이 필요 
-    // 새로운 결과에 0 ~ index 까지 내용 복사 
-    /*
-      for (let i = index + 1 ; i < selectOptions.length; i ++) {
-        const fixedValues = []
-        newOptions[i].values = await this.client.Get()
-        for (let j = 0; j < newOptions[i].selectedValues.length; i++) {
-          if (newOptions[i].values.indexOf(newOptions[i].selectedValues[j] > -1) {
-              fixedValues.push(newOptions[i].selectedValues[j])
-              newOptions[i].values.indexOf(newOptions[i].selectedValues = [...fixedValus]
-          }
-        }
-      }
-    */
-    // category 또는 subcategory 변경 시 전체 구조를 변경하는것이 없음 .. 
     var newOptions = []
     if (index === 0 || index === 1) {
-      var sliceOptions = [ ...selectOptions]
-      newOptions = sliceOptions.slice(0, index+1)
+      var sliceOptions = [...selectOptions]
+      newOptions = sliceOptions.slice(0, index + 1)
       return await this.InitalizeOptions(newOptions[0].selectedValues[0], newOptions[1].selectedValues[0])
     } else {
       newOptions = [...selectOptions]
     }
-   
-  
+
+
     for (let i = index + 1; i < selectOptions.length; i++) {
       const fixedSelectValues = []
+      if (selectOptions[i].name === "group" || selectOptions[i].name === "groupMerge") {
+        continue
+      }
       const fixedValues = await this.GetOptions(newOptions, i)
       newOptions[i].values = [...fixedValues]
 
@@ -207,7 +199,6 @@ class Client {
         }
       }
     }
-    console.log(newOptions)
     return newOptions
   }
 
@@ -223,64 +214,77 @@ class Client {
 
       const builder = new QueryBuilder()
       builder
-      .from("realtime")
-      .range("-1h", "now()")
-      .measurment(options[0].selectedValues[0]+"_"+options[1].selectedValues[0])
-      for (let i = 2; i < index; i ++) {
+        .from("realtime")
+        .range("-1h", "now()")
+        .measurment(options[0].selectedValues[0] + "_" + options[1].selectedValues[0])
+      for (let i = 2; i < index; i++) {
         builder.filter(options[i].name, options[i].selectedValues)
       }
       builder
-      .keepColumns([options[index].name])
-      .group()
-      .distinct(options[index].name)
-      .limit(1000)
-      .sort()
-     // console.log("query=", builder.Builder())
+        .keepColumns([options[index].name])
+        .group()
+        .distinct(options[index].name)
+        .limit(1000)
+        .sort()
+      // console.log("query=", builder.Builder())
 
       for await (const { values, tableMeta } of queryAPI.iterateRows(builder.Builder())) {
         const o = tableMeta.toObject(values);
         result.push(o._value)
       }
-    }catch(e) {
+    } catch (e) {
       console.log("get options failed. ", e.toString())
       throw new Error("get options failed.")
     }
     return result
   }
-   
+
   async InitalizeOptions(categoryName, subCategoryName) {
     const options = [] // {name: "", multiple: true, values: [], selectedValues: []}
     const categoryList = await this.GetCategoryList()
     if (!categoryName && !subCategoryName) {
       const subCategoryList = await this.GetSubCategoryList(categoryList[0])
-      options.push({name: "category", multiple: false, values: [...categoryList], selectedValues: [categoryList[0]], detailed: false})
-      options.push({name: "subcategory", multiple: false, values: [...subCategoryList], selectedValues: [subCategoryList[0]], detailed: false})
+      options.push({ name: "category", multiple: false, values: [...categoryList], selectedValues: [categoryList[0]], additional: false })
+      options.push({ name: "subcategory", multiple: false, values: [...subCategoryList], selectedValues: [subCategoryList[0]], additional: false })
     } else if (categoryName && !subCategoryName) {
       const subCategoryList = await this.GetSubCategoryList(categoryName)
-      options.push({name: "category", multiple: false, values: [...categoryList], selectedValues: [categoryName], detailed: false})
-      options.push({name: "subcategory", multiple: false, values: [...subCategoryList], selectedValues: [subCategoryList[0]], detailed: false})
+      options.push({ name: "category", multiple: false, values: [...categoryList], selectedValues: [categoryName], additional: false })
+      options.push({ name: "subcategory", multiple: false, values: [...subCategoryList], selectedValues: [subCategoryList[0]], additional: false })
     } else if (categoryName && subCategoryName) {
       const subCategoryList = await this.GetSubCategoryList(categoryName)
-      options.push({name: "category", multiple: false, values: [...categoryList], selectedValues: [categoryName], detailed: false})
-      options.push({name: "subcategory", multiple: false, values: [...subCategoryList], selectedValues: [subCategoryName], detailed: false})
+      options.push({ name: "category", multiple: false, values: [...categoryList], selectedValues: [categoryName], additional: false })
+      options.push({ name: "subcategory", multiple: false, values: [...subCategoryList], selectedValues: [subCategoryName], additional: false })
     }
 
     const tagNameList = await this.GetTagNameList(options[0].selectedValues[0], options[1].selectedValues[0])
-    
-    
-   
-    for (let i = 0 ; i < tagNameList.length; i++) {
-      options.push({name: tagNameList[i], multiple: true, values:[], selectedValues:[], detailed: false})
+
+
+
+    for (let i = 0; i < tagNameList.length; i++) {
+      options.push({ name: tagNameList[i], multiple: true, values: [], selectedValues: [], additional: false })
     }
-    
-    for (let i = 2 ; i < options.length; i++ ) {
-      
-      const result =  await this.GetOptions(options, i)
+
+    for (let i = 2; i < options.length; i++) {
+      const result = await this.GetOptions(options, i)
       options[i].values = [...result]
       options[i].selectedValues = []
-      options[i].detailed = requiredField(options[i].name)
+      options[i].additional = requiredField(options[i].name)
     }
-    //console.log(options)
+
+    const tagList = [];
+    Object.values(options).forEach((value) => {
+      if ((value.name === "category") || (value.name === "subcategory") || (value.name === "_field")) {
+        return;
+      }
+      tagList.push(value.name)
+    })
+
+    if (tagList.length > 1) {
+      options.push({ name: "group", multiple: true, values: [...tagList], selectedValues: [], additional: true })
+      options.push({ name: "groupMerge", multiple: false, values: ["sum", "min", "max", "mean", "last", "frist"], selectedValues: ["sum"], additional: true })
+    }
+
+
     return options
   }
 
@@ -288,28 +292,107 @@ class Client {
     const builder = new QueryBuilder()
     const categoryName = options[0].selectedValues[0]
     const subCategoryName = options[1].selectedValues[0]
+    const defaultGroupList = ["_time", "_measurment", "_field"]
 
     builder
-    .from("realtime")
-    .range("-30m", "now()")
-    .measurment(categoryName + "_" + subCategoryName)
-    
-    for (let i = 2 ; i < options.length; i++) {
+      .from("realtime")
+      .range("-30m", "now()")
+      .measurment(categoryName + "_" + subCategoryName)
+
+    for (let i = 2; i < options.length; i++) {
+      if (options[i].name === "group" || options[i].name === "groupMerge") {
+        continue
+      }
       builder.filter(options[i].name, options[i].selectedValues)
     }
+
+    if (options.lenght - 2 > 0) {
+      if (options[options.length - 2].name === "group") {
+        const groupIndex = options.lenght - 2
+        const groupColumns = [...defaultGroupList, ...options[groupIndex].selectedValues]
+        builder.groupColumns(groupColumns)
+        builder.groupFn(options[groupIndex + 1].selectedValues[0])
+        builder.groupColumns(groupColumns.shift())
+      }
+    }
+
     builder.yield(name)
     return builder.Builder()
   }
 
+  // async getMetricData(query) {
+  //   const result = []
+  //   const queryAPI = this.client.getQueryApi(this.org);
+  //   for await (const { values, tableMeta } of queryAPI.iterateRows(query)) {
+  //     const o = tableMeta.toObject(values);
+  //     result.push(o)
+  //   }
+  //   return result
+  // }
+
   async getMetricData(query) {
     const result = []
+    const times = []
+    const check = new Map()
     const queryAPI = this.client.getQueryApi(this.org);
     for await (const { values, tableMeta } of queryAPI.iterateRows(query)) {
       const o = tableMeta.toObject(values);
-      result.push(o)
+      var current = []
+      var { _time, _value, ...meta } = o
+      const keyArray = Object.values(meta)
+      const key = keyArray.join("")
+      if (check.has(key)) {
+        current = check.get(key)
+      }
+      times.push(o._time)
+      current.push(o)
+      check.set(key, current)
     }
-    return result
+
+    check.forEach((values) => {
+      result.push(values)
+    })
+
+    const set = new Set(times)
+    const timeArray = [...set].sort(TimeSort)
+    // result 에서 보정이 시간 값에 대한 보정
+    return this.dataCorrection(timeArray, result)
+  }
+
+  dataCorrection(timeArray, lineValues) {
+    const allCorrections = []
+    for (let i = 0; i < lineValues.length; i++) {
+      var corrections = []
+      var values = lineValues[i]
+      var { _time, _start, _stop, _value, ...meta } = values[0];
+      var keyArray = Object.values(meta)
+
+      if (values.length === timeArray.length) {
+        // timeArray, values의 길이가 같을 경우는 항상 같은 시간 값을 가짐
+        // values.length가 timeArray.length 보다 클 경우는 없음 
+        // values to {label: connectNulls: true, data: [...data]} 형 변환 필요
+        // console.log(values)
+        values.forEach(v => corrections.push(v._value))
+        allCorrections.push({ label: keyArray.join(" "), showMark: false, connectNulls: true, data: [...corrections] })
+        continue
+      }
+
+
+      for (let j = 0; j < timeArray.length; j++) {
+        var findIndex = values.findIndex(v => v._time === timeArray[j])
+        if (findIndex < 0) {
+          corrections.push(null)
+        } else {
+          corrections.push(values[findIndex]._value)
+        }
+      }
+      allCorrections.push({ label: keyArray.join(" "), showMark: false, connectNulls: true, data: [...corrections] })
+    }
+
+    return {
+      labels: timeArray,
+      dataSets: allCorrections,
+    };
   }
 }
-
 export default Client;
