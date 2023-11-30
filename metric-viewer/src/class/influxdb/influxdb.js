@@ -33,17 +33,6 @@ const requiredField = (name) => {
   }
   return true;
 }
-const sortField = (a, b) => {
-  var ap = SortNumber(a);
-  var bp = SortNumber(b);
-
-  if (ap > bp) {
-    return 1;
-  } else if (ap < bp) {
-    return -1;
-  }
-  return 0;
-}
 
 class Client {
   constructor() {
@@ -177,7 +166,7 @@ class Client {
 
     for (let i = index + 1; i < selectOptions.length; i++) {
       const fixedSelectValues = []
-      if (selectOptions[i].name === "group" || selectOptions[i].name === "groupMerge") {
+      if (newOptions[i].name === "group" || newOptions[i].name === "groupMerge" || newOptions[i].name === 'aggregationFn' || newOptions[i].name ==='chart') {
         continue
       }
       const fixedValues = await this.GetOptions(newOptions, i)
@@ -282,13 +271,15 @@ class Client {
     if (tagList.length > 1) {
       options.push({ name: "group", multiple: true, values: [...tagList], selectedValues: [], additional: true })
       options.push({ name: "groupMerge", multiple: false, values: ["sum", "min", "max", "mean", "last", "frist"], selectedValues: ["sum"], additional: true })
+     
     }
-
+    options.push({ name: "aggregationFn",  multiple: false, values: ["sum", "min", "max", "mean", "last", "frist"], selectedValues: ["sum"], additional: true})
+    options.push({ name: "chart", multiple: false, values: ["line", "area"], selectedValues: ["line"], additional: true })
 
     return options
   }
 
-  makeQuery(name, options) {
+  makeQuery(name, options, aggregateWindow) {
     const builder = new QueryBuilder()
     const categoryName = options[0].selectedValues[0]
     const subCategoryName = options[1].selectedValues[0]
@@ -300,19 +291,35 @@ class Client {
       .measurment(categoryName + "_" + subCategoryName)
 
     for (let i = 2; i < options.length; i++) {
-      if (options[i].name === "group" || options[i].name === "groupMerge") {
+      if (options[i].name === "group" || options[i].name === "groupMerge" || options[i].name === 'aggregationFn' || options[i].name === 'chart') {
         continue
       }
       builder.filter(options[i].name, options[i].selectedValues)
     }
 
-    if (options.lenght - 2 > 0) {
-      if (options[options.length - 2].name === "group") {
-        const groupIndex = options.lenght - 2
+    if (aggregateWindow) {
+      if (aggregateWindow.period !== 'raw') {
+        const aggrFn = options.findIndex(value => value.name === "aggregationFn")
+        builder.aggregateWindow(
+          aggregateWindow.period,
+          options[aggrFn].selectedValues[0],
+          aggregateWindow.createEmpty
+        )
+        if (aggregateWindow.fill) {
+          builder.fill(aggregateWindow.fill)
+        }
+      }
+    }
+
+    const groupIndex = options.findIndex(value => value.name === "group")
+    const mergedIndex = options.findIndex(value => value.name ==="groupMerge")
+    if (groupIndex && mergedIndex) {
+      if (options[groupIndex].selectedValues.length !== 0) {
         const groupColumns = [...defaultGroupList, ...options[groupIndex].selectedValues]
         builder.groupColumns(groupColumns)
-        builder.groupFn(options[groupIndex + 1].selectedValues[0])
-        builder.groupColumns(groupColumns.shift())
+        builder.groupFn(options[mergedIndex].selectedValues[0])
+        groupColumns.splice(0, 1)
+        builder.groupColumns(groupColumns)
       }
     }
 
@@ -338,7 +345,7 @@ class Client {
     for await (const { values, tableMeta } of queryAPI.iterateRows(query)) {
       const o = tableMeta.toObject(values);
       var current = []
-      var { _time, _value, ...meta } = o
+      var { _time, _value, table, ...meta } = o
       const keyArray = Object.values(meta)
       const key = keyArray.join("")
       if (check.has(key)) {
@@ -362,21 +369,20 @@ class Client {
   dataCorrection(timeArray, lineValues) {
     const allCorrections = []
     for (let i = 0; i < lineValues.length; i++) {
-      var corrections = []
+      const corrections = []
       var values = lineValues[i]
-      var { _time, _start, _stop, _value, ...meta } = values[0];
+      var { _time, _start, _stop, _value, table, ...meta } = values[0];
       var keyArray = Object.values(meta)
-
       if (values.length === timeArray.length) {
         // timeArray, values의 길이가 같을 경우는 항상 같은 시간 값을 가짐
         // values.length가 timeArray.length 보다 클 경우는 없음 
         // values to {label: connectNulls: true, data: [...data]} 형 변환 필요
         // console.log(values)
-        values.forEach(v => corrections.push(v._value))
+        values.forEach((v) => (corrections.push(v._value)))
+
         allCorrections.push({ label: keyArray.join(" "), showMark: false, connectNulls: true, data: [...corrections] })
         continue
       }
-
 
       for (let j = 0; j < timeArray.length; j++) {
         var findIndex = values.findIndex(v => v._time === timeArray[j])
@@ -386,9 +392,9 @@ class Client {
           corrections.push(values[findIndex]._value)
         }
       }
+      
       allCorrections.push({ label: keyArray.join(" "), showMark: false, connectNulls: true, data: [...corrections] })
     }
-
     return {
       labels: timeArray,
       dataSets: allCorrections,

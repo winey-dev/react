@@ -60,7 +60,12 @@ class QueryBuilder {
     }
 
     aggregateWindow(period, fn, createEmpty) {
-        this.fluxQuery += `|> aggregateWindow(every: ${period}, fn: ${fn}, createEmpty: ${createEmpty})`
+        this.fluxQuery += ` |> aggregateWindow(every: ${period}, fn: ${fn}, createEmpty: ${createEmpty})\n`
+        return this
+    }
+
+    fill (fill) {
+        this.fluxQuery += ` |> fill(${fill})\n`
         return this
     }
 

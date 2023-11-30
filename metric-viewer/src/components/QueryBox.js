@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from "react";
-import { Button, Dialog, DialogTitle, DialogContent, Box, DialogActions, Divider } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Button, Dialog, DialogTitle, DialogContent, Box, DialogActions } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import RemoveIcon from "@mui/icons-material/Remove";
 import MUISelect from "./Select/MUISelect";
@@ -99,7 +99,7 @@ const QueryBox = (props) => {
           <>
             <Button onClick={handleClickOpen}>ADDITIONAL</Button>
             <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
-              <DialogTitle>Additinal Select</DialogTitle>
+              <DialogTitle>Additional Select</DialogTitle>
               <DialogContent>
                 <Box component="form" sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
                   {selectOptions.map((selectOption, index) => (

@@ -5,6 +5,7 @@ import QueryBox from "./components/QueryBox";
 import uuid from "react-uuid";
 import Client from "./class/influxdb/influxdb";
 import { LineChart } from '@mui/x-charts/LineChart';
+import MUISelect from "./components/Select/MUISelect";
 
 function App() {
   const [inputQueryBoxes, setInputQueryBoxes] = useState([
@@ -12,6 +13,13 @@ function App() {
     // .set("category", "resource")
     // .set("subCategory", "node"),
   ]);
+  const [period, setPeriod] = useState({ name: "period", multiple: false, values: ["raw","5s","10s","30s"], selectedValues: ["raw"] })
+  
+  const onChangePeriod = (value, _index) => {
+    if (value) {
+      setPeriod({ name: "period", multiple: false, values: ["raw","5s","10s","30s"], selectedValues: [value] })
+    }
+  }
 
 
   const client = new Client();
@@ -45,7 +53,10 @@ function App() {
     const fetch = async () => {
       var query = ''
       for (let i = 0; i < inputQueryBoxes.length; i++) {
-        query += client.makeQuery("query_".concat(i), inputQueryBoxes[i].get("query"))
+        query += client.makeQuery(
+          "query_".concat(i), 
+          inputQueryBoxes[i].get("query"), 
+          {period: period.selectedValues[0], createEmpty: true})
       }
 
       const response = await client.getMetricData(query)
@@ -84,6 +95,12 @@ function App() {
             <Button onClick={() => appendOnClick()}>Append</Button>
           </div>
           <div style={{ flexGrow: 1, display: "flex", justifyContent: "right" }}>
+            <MUISelect
+            key='period'
+            index={0}
+            selectOption={period}
+            onChangeEvent={onChangePeriod}/>
+
             <Button name="run" onClick={handleOnSubmit}>
               Run
             </Button>
