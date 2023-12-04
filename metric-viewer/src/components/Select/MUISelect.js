@@ -30,11 +30,11 @@ const MUISelect = (props) => {
     if (selectOption.multiple) {
       return length * 14
     }
-    return length * 10
+    return length * 14
   }
 
   return (
-    <FormControl sx={{ m: 1, minWidth: maxLength, maxWidth: maxLength * 2 }}>
+    <FormControl sx={{ m: 1, minWidth: maxLength, maxWidth: maxLength }}>
       <InputLabel id={name + "-label-id"}>{name}</InputLabel>
       <Select
         labelId={name + "-label-id"}

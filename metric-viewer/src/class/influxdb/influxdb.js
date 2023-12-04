@@ -166,7 +166,7 @@ class Client {
 
     for (let i = index + 1; i < selectOptions.length; i++) {
       const fixedSelectValues = []
-      if (newOptions[i].name === "group" || newOptions[i].name === "groupMerge" || newOptions[i].name === 'aggregationFn' || newOptions[i].name ==='chart') {
+      if (newOptions[i].name === "group" || newOptions[i].name === "groupMerge" || newOptions[i].name === 'aggregationFn' || newOptions[i].name === 'chart') {
         continue
       }
       const fixedValues = await this.GetOptions(newOptions, i)
@@ -271,9 +271,9 @@ class Client {
     if (tagList.length > 1) {
       options.push({ name: "group", multiple: true, values: [...tagList], selectedValues: [], additional: true })
       options.push({ name: "groupMerge", multiple: false, values: ["sum", "min", "max", "mean", "last", "frist"], selectedValues: ["sum"], additional: true })
-     
+
     }
-    options.push({ name: "aggregationFn",  multiple: false, values: ["sum", "min", "max", "mean", "last", "frist"], selectedValues: ["sum"], additional: true})
+    options.push({ name: "aggregationFn", multiple: false, values: ["sum", "min", "max", "mean", "last", "frist"], selectedValues: ["sum"], additional: true })
     options.push({ name: "chart", multiple: false, values: ["line", "area"], selectedValues: ["line"], additional: true })
 
     return options
@@ -312,8 +312,8 @@ class Client {
     }
 
     const groupIndex = options.findIndex(value => value.name === "group")
-    const mergedIndex = options.findIndex(value => value.name ==="groupMerge")
-    if (groupIndex && mergedIndex) {
+    const mergedIndex = options.findIndex(value => value.name === "groupMerge")
+    if (groupIndex != -1 && mergedIndex != -1) {
       if (options[groupIndex].selectedValues.length !== 0) {
         const groupColumns = [...defaultGroupList, ...options[groupIndex].selectedValues]
         builder.groupColumns(groupColumns)
@@ -392,7 +392,7 @@ class Client {
           corrections.push(values[findIndex]._value)
         }
       }
-      
+
       allCorrections.push({ label: keyArray.join(" "), showMark: false, connectNulls: true, data: [...corrections] })
     }
     return {

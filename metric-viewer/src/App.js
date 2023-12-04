@@ -13,11 +13,11 @@ function App() {
     // .set("category", "resource")
     // .set("subCategory", "node"),
   ]);
-  const [period, setPeriod] = useState({ name: "period", multiple: false, values: ["raw","5s","10s","30s"], selectedValues: ["raw"] })
-  
+  const [period, setPeriod] = useState({ name: "period", multiple: false, values: ["raw", "5s", "10s", "30s"], selectedValues: ["raw"] })
+
   const onChangePeriod = (value, _index) => {
     if (value) {
-      setPeriod({ name: "period", multiple: false, values: ["raw","5s","10s","30s"], selectedValues: [value] })
+      setPeriod({ name: "period", multiple: false, values: ["raw", "5s", "10s", "30s"], selectedValues: [value] })
     }
   }
 
@@ -54,10 +54,11 @@ function App() {
       var query = ''
       for (let i = 0; i < inputQueryBoxes.length; i++) {
         query += client.makeQuery(
-          "query_".concat(i), 
-          inputQueryBoxes[i].get("query"), 
-          {period: period.selectedValues[0], createEmpty: true})
+          "query_".concat(i),
+          inputQueryBoxes[i].get("query"),
+          { period: period.selectedValues[0], createEmpty: true })
       }
+      console.log(query)
 
       const response = await client.getMetricData(query)
       setMetricDatas(response)
@@ -96,10 +97,10 @@ function App() {
           </div>
           <div style={{ flexGrow: 1, display: "flex", justifyContent: "right" }}>
             <MUISelect
-            key='period'
-            index={0}
-            selectOption={period}
-            onChangeEvent={onChangePeriod}/>
+              key='period'
+              index={0}
+              selectOption={period}
+              onChangeEvent={onChangePeriod} />
 
             <Button name="run" onClick={handleOnSubmit}>
               Run
