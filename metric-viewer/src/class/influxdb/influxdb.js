@@ -11,10 +11,10 @@ const TimeSort = (a, b) => {
 }
 const SortNumber = (str) => {
   const SortMAP = {
-    _field: 1,
-    node_name: 2,
-    namespace: 3,
-    app_name: 4,
+    node_name: 1,
+    namespace: 2,
+    app_name: 3,
+    _field: 4,
     pod_name: 5,
     container_name: 6,
   };
@@ -313,7 +313,7 @@ class Client {
 
     const groupIndex = options.findIndex(value => value.name === "group")
     const mergedIndex = options.findIndex(value => value.name === "groupMerge")
-    if (groupIndex != -1 && mergedIndex != -1) {
+    if (groupIndex !== -1 && mergedIndex !== -1) {
       if (options[groupIndex].selectedValues.length !== 0) {
         const groupColumns = [...defaultGroupList, ...options[groupIndex].selectedValues]
         builder.groupColumns(groupColumns)

@@ -1,0 +1,10 @@
+.Viewer {
+    background-color: whitesmoke;
+    margin: 3px;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}

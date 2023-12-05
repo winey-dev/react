@@ -1,0 +1,41 @@
+.form {
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+    margin: 3px;
+}
+
+.QueryBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 3;
+    width: 100%;
+}
+
+.QueryController {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    width: 100%;
+}
+
+.SpaceSelector {
+    display: flex;
+    background-color: whitesmoke;
+    justify-content: right;
+    align-items: center;
+    flex-grow: 3;
+}
+
+.RunSelector {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    flex-grow: 1;
+}
