@@ -1,17 +1,21 @@
+import { useState } from 'react';
 import './App.css';
 import Controller from './Components/Controller/Controller';
 import Viewer from './Components/Viewer/Viewer';
 
 function App() {
+  const [viewData, setViewData] = useState()
 
-
-
-
+  const setData = (data) => {
+    setViewData(data)
+  }
+  // client ladoing 
+  // metric data channel 
 
   return (
     <div className='App'>
-      <Controller />
-      <Viewer />
+      <Controller setData={setData} />
+      <Viewer viewData={viewData} />
     </div>
   );
 }
