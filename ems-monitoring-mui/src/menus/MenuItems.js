@@ -1,18 +1,15 @@
 import { IoHomeOutline } from "react-icons/io5";
 import { LuMonitorCheck } from "react-icons/lu";
 import { GrUserSettings } from "react-icons/gr";
-import MainLayout from '../layouts/MainLayout/MainLayout';
-import Pages from '../pages/pages';
+
 
 const OperationMenu = () => {
-    const head = '/operation'
-
     const menus = [
 
         {
             name: 'Home',
             id: 'operation-home-id',
-            url: head.join("/$(head)", head),
+            url: "/operation/home",
             icon: <IoHomeOutline />,
         },
         {
@@ -47,13 +44,13 @@ const OperationMenu = () => {
                 {
                     name: 'Users',
                     id: 'operation-authorization-users-id',
-                    path: '/operation/',
+                    url: '/operation/authorization/users',
 
                 },
                 {
                     name: 'Permissions',
                     id: 'operation-authorization-permissions-id',
-                    path: 'users',
+                    url: '/operation/authorization/permissions',
 
                 }
             ]

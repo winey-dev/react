@@ -1,7 +1,7 @@
 import MainLayout from '../layouts/MainLayout/MainLayout'
 import Pages from '../pages/pages';
 const MainRoutes = {
-    path: '/',
+    path: 'operation',
     element: <MainLayout />,
     children: [
         {
