@@ -1,0 +1,36 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    width: 100vh;
+    height: 100vh;
+
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    width: 100vh;
+    height: 15vh;
+    border: solid;
+}
+
+.sidebar-open {
+    display: flex;
+    flex-direction: column;
+    width: 20vh;
+    height: 85vh;
+    border: solid;
+}
+
+.sidebar-close {
+
+    min-width: 0;
+    width: 0vh;
+    height: 85vh
+}
+
+.main {
+    display: contents;
+    width: 100%;
+    height: 100%;
+}

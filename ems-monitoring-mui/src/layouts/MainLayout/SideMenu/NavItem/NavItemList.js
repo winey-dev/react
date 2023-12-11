@@ -1,12 +1,20 @@
-import { List, ListItemButton, ListItemText } from '@mui/material';
+import { List, ListItem, ListItemText } from '@mui/material';
+import { NavLink } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
+const CustomListItem = ({ to, primary }) => {
+    const location = useLocation()
+    return (
+        <ListItem selected={to === location.pathname} component={NavLink} to={to} sx={{ pl: 4 }}>
+            <ListItemText primary={primary} />
+        </ListItem>
+    )
+}
 const NavItemList = (props) => {
     const { items } = props;
-    const menuList = items.map((menu) => {
-        console.log(menu)
+    const menuList = items.map((item) => {
         return (
-            <ListItemButton key={menu.id} to={menu.url} sx={{ pl: 4 }}>
-                <ListItemText primary={menu.name} />
-            </ListItemButton>
+            <CustomListItem to={item.url} primary={item.name} />
         )
     }
     )

@@ -1,5 +1,5 @@
 
-import { List, Box } from '@mui/material';
+import { List, Box, Drawer } from '@mui/material';
 import { OperationMenu } from '../../../menus/MenuItems';
 import { useState } from 'react';
 import NavItem from './NavItem/NavItem';
@@ -35,12 +35,11 @@ const SideMenu = ({ toggle, onClose }) => {
                 return (
                     <NavItem key={menu.id} item={menu} />
                 )
-
         }
     })
 
     return (
-        <Box
+        <Drawer
             anchor='left'
             open={toggle}
             variant="temperay"
@@ -53,7 +52,7 @@ const SideMenu = ({ toggle, onClose }) => {
                 {sideMenuList}
 
             </List>
-        </Box>
+        </Drawer>
 
     )
 }
