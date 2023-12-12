@@ -42,11 +42,37 @@ const SideMenu = ({ toggle, onClose }) => {
         <Drawer
             anchor='left'
             open={toggle}
-            variant="temperay"
+            variant='persistent'
             onClose={onClose}
+            PaperProps={{
+                elevation: 1,
+                sx: {
+
+                    height: 'calc(100vh - 25vh)',
+                    top: 80
+                },
+            }}
         >
+
             <List
-                sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+                sx={{
+                    width: '100%', maxWidth: 360, bgcolor: 'background.paper',
+                    // selected and (selected + hover) states
+                    '&& .Mui-selected, && .Mui-selected:hover': {
+                        bgcolor: 'red',
+                        '&, & .MuiListItemIcon-root': {
+                            color: 'pink',
+                        },
+                    },
+                    // hover states
+                    '& .MuiListItemButton-root:hover': {
+                        bgcolor: 'orange',
+                        '&, & .MuiListItemIcon-root': {
+                            color: 'yellow',
+                        },
+                    },
+
+                }}
                 component="nav"
             >
                 {sideMenuList}

@@ -4,9 +4,10 @@ import { NavLink, useLocation } from 'react-router-dom';
 
 const CustomIconListItem = ({ icon, to, primary }) => {
     const location = useLocation()
+
     return (
         // <ListItem onSelect={() => (to === location.pathname)} component={NavLink} to={to} sx={{ pl: 4 }}>
-        <ListItem selected={to === location.pathname} component={NavLink} to={to} sx={{ pl: 4 }}>
+        <ListItem selected={to === location.pathname} component={NavLink} to={to}>
             <ListItemIcon>
                 {icon}
             </ListItemIcon>

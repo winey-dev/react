@@ -1,0 +1,10 @@
+div {
+    font-family: 'Nanum Gothic', sans-serif;
+    font-family: 'Nanum Gothic Coding', monospace;
+}
+
+/*  만약 같은 타입의 여러 글꼴을 한번에 추가하고 싶다면 */
+/*  왼쪽 것부터 로딩 적용되며 없을 경우 다음 font를 확인  */
+.div2 {
+    font-family: 'Nanum Gothic', 'Nanum Gothic Coding' sans-serif, monospace;
+}

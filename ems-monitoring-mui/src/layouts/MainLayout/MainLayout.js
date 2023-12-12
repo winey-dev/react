@@ -15,9 +15,10 @@ const MainLayout = () => {
             <AppHeader onClose={onClose} />
             <Box sx={{ display: 'flex', width: '100%', flexDirection: 'row' }}>
                 <SideMenu onClose={onClose} toggle={toggle} />
-                <Box component="main" sx={{ width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
-                    <Outlet />
-                </Box>
+                <Outlet />
+                {/* <Box component="main" sx={{ width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
+                   
+                </Box> */}
             </Box>
         </Box>
     )

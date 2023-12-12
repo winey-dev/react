@@ -1,0 +1,26 @@
+@font-face {
+    font-family: '학교안심 봄방학 R';
+    /* fonts 폴더 경로를 입력한다. */
+    src: url(fonts/HakgyoansimBombanghakR.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: '학교안심 가을소풍 L';
+    src: url(fonts/HakgyoansimGaeulsopungL.ttf) format('truetype');
+}
+
+/* 전역 적용 */
+* {
+    font-family: '학교안심 봄방학 R';
+}
+
+/* span tag에 적용 */
+span {
+    font-family: '학교안심 봄방학 R';
+}
+
+
+/* div tag에 적용 */
+div {
+    font-family: '학교안심 가을소풍 L';
+}

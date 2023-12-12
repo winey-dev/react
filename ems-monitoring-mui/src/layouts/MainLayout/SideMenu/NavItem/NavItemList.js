@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 const CustomListItem = ({ to, primary }) => {
     const location = useLocation()
+
     return (
         <ListItem selected={to === location.pathname} component={NavLink} to={to} sx={{ pl: 4 }}>
             <ListItemText primary={primary} />
@@ -14,7 +15,7 @@ const NavItemList = (props) => {
     const { items } = props;
     const menuList = items.map((item) => {
         return (
-            <CustomListItem to={item.url} primary={item.name} />
+            <CustomListItem key={item.id} to={item.url} primary={item.name} />
         )
     }
     )
