@@ -6,7 +6,7 @@ const NavGroup = (props) => {
     return (
         <>
             <ListItemButton onClick={() => onClick(index)}>
-                <ListItemIcon>
+                <ListItemIcon sx={{ color: '#fff' }}>
                     {item.icon}
                 </ListItemIcon>
                 <ListItemText primary={item.name} />

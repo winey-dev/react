@@ -6,7 +6,7 @@ const CustomListItem = ({ to, primary }) => {
     const location = useLocation()
 
     return (
-        <ListItem selected={to === location.pathname} component={NavLink} to={to} sx={{ pl: 4 }}>
+        <ListItem selected={to === location.pathname} component={NavLink} to={to} sx={{ pl: 4, color: '#fff' }}>
             <ListItemText primary={primary} />
         </ListItem>
     )

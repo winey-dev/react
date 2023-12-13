@@ -3,18 +3,18 @@ import { Box } from '@mui/material'
 import AppHeader from './AppHeader/AppHeader';
 import SideMenu from './SideMenu/SideMenu';
 import { useState } from 'react';
+
 const MainLayout = () => {
     const [toggle, setToggle] = useState(false);
-
-    const onClose = () => {
+    const onToggleHandler = () => {
         setToggle(!toggle)
     }
 
     return (
-        <Box sx={{ display: 'flex', height: '100%', flexDirection: 'column' }}>
-            <AppHeader onClose={onClose} />
+        <Box sx={{ display: 'flex', height: '100%', flexDirection: 'column' }} color='inherit'>
+            <AppHeader onClose={onToggleHandler} />
             <Box sx={{ display: 'flex', height: '100%', flexDirection: 'row' }}>
-                <SideMenu onClose={onClose} toggle={toggle} />
+                <SideMenu onClose={onToggleHandler} toggle={toggle} />
                 <Outlet />
                 {/* <Box component="main" sx={{ width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
                    

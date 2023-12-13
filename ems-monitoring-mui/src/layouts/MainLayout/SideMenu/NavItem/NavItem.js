@@ -7,8 +7,8 @@ const CustomIconListItem = ({ icon, to, primary }) => {
 
     return (
         // <ListItem onSelect={() => (to === location.pathname)} component={NavLink} to={to} sx={{ pl: 4 }}>
-        <ListItem selected={to === location.pathname} component={NavLink} to={to}>
-            <ListItemIcon>
+        <ListItem selected={to === location.pathname} component={NavLink} to={to} sx={{ color: '#fff' }}>
+            <ListItemIcon sx={{ color: '#fff', fontSize: 30 }}>
                 {icon}
             </ListItemIcon>
             <ListItemText primary={primary} />

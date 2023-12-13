@@ -54,6 +54,19 @@ const OperationMenu = () => {
 
                 }
             ]
+        },
+        {
+            name: 'Example',
+            id: 'example-id',
+            type: 'group',
+            url: '/example',
+            children: [
+                {
+                    name: 'NestedList',
+                    id: 'nestedlist',
+                    url: '/operation/example/nested_list_example',
+                }
+            ]
         }
     ]
     return menus;

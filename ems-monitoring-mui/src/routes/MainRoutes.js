@@ -1,5 +1,7 @@
 import MainLayout from '../layouts/MainLayout/MainLayout'
 import Pages from '../pages/pages';
+import Page from '../components/Page/Page';
+import NestedList from '../pages/ListExample';
 const MainRoutes = {
     path: 'operation',
     element: <MainLayout />,
@@ -38,6 +40,15 @@ const MainRoutes = {
                 }
             ],
         },
+        {
+            path: 'example',
+            children: [
+                {
+                    path: 'nested_list_example',
+                    element: <Page title='Nested List' element={<NestedList />} />
+                }
+            ]
+        }
     ]
 }
 

@@ -2,7 +2,8 @@ import { AppBar, IconButton, Toolbar, Typography } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
 const AppHeader = (props) => {
     return (
-        <AppBar position='static' sx={{ bgcolor: 'text.primary' }}>
+        <AppBar position='static'>
+            {/* <AppBar position='static' sx={{ bgcolor: 'text.primary' }}> */}
             <Toolbar>
                 <IconButton
                     size="large"
@@ -14,7 +15,7 @@ const AppHeader = (props) => {
                     <MenuIcon />
                 </IconButton>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    EMS Monitoring
+                    My Web
                 </Typography>
             </Toolbar>
         </AppBar>

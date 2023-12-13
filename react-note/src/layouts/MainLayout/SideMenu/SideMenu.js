@@ -7,17 +7,17 @@ import { NavLink } from 'react-router-dom';
 
 const ListColorStyle = {
     width: '100%', maxWidth: 360,
-    bgcolor: 'text.primary', color: '#fff'
+    // bgcolor: 'text.primary', color: '#fff'
 }
 
 const ListGroupTextStyle = {
-    fontSize: '18px'
+    fontSize: '15px',
 }
 
 
 const IconStyle = {
-    color: '#fff',
-    fontSize: 40,
+    // color: '#fff',
+    fontSize: 30,
 }
 
 
@@ -46,7 +46,7 @@ const SideMenu = ({ toggle, onClose }) => {
                                         {menu.icon}
                                     </ListItemIcon>}
                                     <ListItemText primary={menu.name} primaryTypographyProps={ListGroupTextStyle} />
-                                    {open ? <ExpandLess /> : <ExpandMore />}
+                                    {open[index] ? <ExpandLess /> : <ExpandMore />}
                                 </ListItemButton>
                                 <Collapse in={open[index]} timeout="auto" unmountOnExit>
                                     <List component="div" disablePadding>

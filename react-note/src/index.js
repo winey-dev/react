@@ -1,18 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import ScrollTop from './components/ScrollTop';
-import { BrowserRouter } from 'react-router-dom';
-import AppRoutes from './routes'
+import App from './App';
 import './index.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <div className='main'>
-    <BrowserRouter>
-      <ScrollTop>
-        <AppRoutes />
-      </ScrollTop>
-    </BrowserRouter>
+    <App />
   </div>
 );
 
