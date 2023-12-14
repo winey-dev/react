@@ -1780,6 +1780,22 @@
   dependencies:
     "@babel/runtime" "^7.23.5"
 
+"@mui/material-next@^6.0.0-alpha.113":
+  version "6.0.0-alpha.113"
+  resolved "https://registry.yarnpkg.com/@mui/material-next/-/material-next-6.0.0-alpha.113.tgz#4dba7000edec3ab0262634dfa8ede341018197f1"
+  integrity sha512-npk5C9y3kk5cCDkSQIpFwI2g0koF6lvmi5IrlGcZBmhBpztHP5DOs4DzZuCQtIULAhxzhgGnX5Z+AH0qyWXnvQ==
+  dependencies:
+    "@babel/runtime" "^7.23.5"
+    "@mui/base" "5.0.0-beta.27"
+    "@mui/material" "^5.15.0"
+    "@mui/system" "^5.15.0"
+    "@mui/types" "^7.2.11"
+    "@mui/utils" "^5.15.0"
+    "@types/react-transition-group" "^4.4.9"
+    clsx "^2.0.0"
+    prop-types "^15.8.1"
+    react-transition-group "^4.4.5"
+
 "@mui/material@^5.15.0":
   version "5.15.0"
   resolved "https://registry.yarnpkg.com/@mui/material/-/material-5.15.0.tgz#f801cf56d505cc52dca225438360ab9c62057285"
