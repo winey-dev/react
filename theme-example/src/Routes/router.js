@@ -1,4 +1,4 @@
-import { useRoutes } from 'react-router-dom'
+import { Navigate, useRoutes } from 'react-router-dom'
 import MainLayout from '../Layouts/MainLayout'
 import Page from '../Components/Page/Page'
 import { Home, About, Profile } from '../Pages'
@@ -9,6 +9,11 @@ const Router = () => {
             element: <MainLayout />,
             children: [
                 {
+                    path: '',
+                    element: <Navigate to='home' />
+                },
+                {
+                    path: 'home',
                     element: <Page title='home' element={<Home />} />
                 },
                 {

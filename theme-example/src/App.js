@@ -1,13 +1,16 @@
-import { GlobalStyles, ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import { BrowserRouter } from 'react-router-dom';
 import Router from './Routes/router';
+//import { ThemeProvider } from 'styled-components';
+import { darkTheme, lightTheme } from './Themes';
 
-const theme = {}
+
 function App() {
-  return (
+  const isDark = false;
 
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
+  return (
+    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+      <CssBaseline />
       <BrowserRouter>
         <Router />
       </BrowserRouter>

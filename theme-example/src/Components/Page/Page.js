@@ -8,9 +8,8 @@ const Page = (props) => {
         titleElement.innerHTML = title
     }, [title])
     const location = useLocation();
-    console.log(location)
     return (
-        <Box >
+        <Box sx={{ margin: '15px', width: '100%' }} >
             {breadcrumbs && location}
             {element && element}
         </Box>
