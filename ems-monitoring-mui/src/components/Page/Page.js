@@ -1,22 +1,29 @@
 import { useEffect } from 'react'
-
 import { Box } from '@mui/material'
-const BoxStyle = {
-    width: '100%',
-    height: '100%',
-    backgrounColor: '#fff'
-}
+import styled from 'styled-components'
+import { grey } from '@mui/material/colors'
+import { useTheme } from '@emotion/react'
 
-const Page = ({ title, element }) => {
+
+
+const WrapperPage = styled(Box)`
+    margin: 4px;
+    width: 100%;
+    background-color: ${({ theme }) => theme.palette.mode === 'dark' ? grey[900] : grey[100]} 
+`
+const Page = (props) => {
+
+    const { title, sx } = props
+    const theme = useTheme();
     useEffect(() => {
         const titleElement = document.getElementsByTagName('title')[0]
         titleElement.innerHTML = title
     }, [title])
 
     return (
-        <Box sx={BoxStyle}>
-            {element}
-        </Box>
+        <WrapperPage theme={theme} sx={sx}>
+            {props.children && props.children}
+        </WrapperPage>
     )
 }
 

@@ -1,11 +1,15 @@
 import MainLayout from '../layouts/MainLayout/MainLayout'
 import Pages from '../pages/pages';
-import Page from '../components/Page/Page';
-import NestedList from '../pages/ListExample';
+import { Navigate } from 'react-router-dom';
+import { PermissionsPage, UserCreatePage, UsersPage } from '../pages/Authorization';
 const MainRoutes = {
-    path: 'operation',
+    path: '/',
     element: <MainLayout />,
     children: [
+        {
+            path: '',
+            element: <Navigate to='home' />,
+        },
         {
             path: 'home',
             element: <Pages name='home' />,
@@ -32,22 +36,19 @@ const MainRoutes = {
             children: [
                 {
                     path: 'users',
-                    element: <Pages name='user page' />
+                    element: <UsersPage />,
+                    children: [
+                        {
+                            path: 'create',
+                            element: <UserCreatePage />
+                        }
+                    ]
                 },
                 {
                     path: 'permissions',
-                    element: <Pages name='permission page' />
+                    element: <PermissionsPage />
                 }
             ],
-        },
-        {
-            path: 'example',
-            children: [
-                {
-                    path: 'nested_list_example',
-                    element: <Page title='Nested List' element={<NestedList />} />
-                }
-            ]
         }
     ]
 }

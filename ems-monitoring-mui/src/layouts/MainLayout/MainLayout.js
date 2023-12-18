@@ -1,26 +1,44 @@
 import { Outlet } from 'react-router-dom'
 import { Box } from '@mui/material'
-import AppHeader from './AppHeader/AppHeader';
-import SideMenu from './SideMenu/SideMenu';
+import Header from './Header';
+import SideMenu from './SideMenu';
 import { useState } from 'react';
-const MainLayout = () => {
-    const [toggle, setToggle] = useState(false);
+import styled from 'styled-components';
 
-    const onClose = () => {
-        setToggle(!toggle)
+const MainStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+}
+
+const Main = styled(Box)`
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+`
+
+const Body = styled(Box)`
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+`
+
+
+const MainLayout = () => {
+    const [toggle, setToggle] = useState('open')
+    const onToggle = () => {
+        toggle === 'open' ? setToggle('close') : setToggle('open')
+
     }
 
     return (
-        <Box sx={{ display: 'flex', height: '100%', flexDirection: 'column' }}>
-            <AppHeader onClose={onClose} />
-            <Box sx={{ display: 'flex', height: '100%', flexDirection: 'row' }}>
-                <SideMenu onClose={onClose} toggle={toggle} />
+        <Main sx={MainStyle}>
+            <Header onToggle={onToggle} />
+            <Body >
+                <SideMenu toggle={toggle} />
                 <Outlet />
-                {/* <Box component="main" sx={{ width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
-                   
-                </Box> */}
-            </Box>
-        </Box>
+            </Body>
+        </Main>
     )
 }
 export default MainLayout

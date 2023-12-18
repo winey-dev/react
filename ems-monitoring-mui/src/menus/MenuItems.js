@@ -9,7 +9,7 @@ const OperationMenu = () => {
         {
             name: 'Home',
             id: 'operation-home-id',
-            url: "/operation/home",
+            url: "/home",
             icon: <IoHomeOutline />,
         },
         {
@@ -17,19 +17,19 @@ const OperationMenu = () => {
             id: 'operation-monitoring-id',
             type: 'group',
             group_id: 'operation-monitoring-group',
-            url: '/operation/monitoring',
+            url: '/monitoring',
             icon: <LuMonitorCheck />,
             children: [
                 {
                     name: 'Metrics',
                     id: 'operation-monitoring-metrics-id',
-                    url: '/operation/monitoring/metrics',
+                    url: '/monitoring/metrics',
 
                 },
                 {
                     name: 'Settings',
                     id: 'operation-monitoring-settings-id',
-                    url: '/operation/monitoring/settings',
+                    url: '/monitoring/settings',
                 },
             ]
         },
@@ -38,33 +38,20 @@ const OperationMenu = () => {
             id: 'operation-authorization-id',
             type: 'group',
             group_id: 'operation-authorization-group',
-            url: '/operation/authorization',
+            url: '/authorization',
             icon: <GrUserSettings />,
             children: [
                 {
                     name: 'Users',
                     id: 'operation-authorization-users-id',
-                    url: '/operation/authorization/users',
+                    url: '/authorization/users',
 
                 },
                 {
                     name: 'Permissions',
                     id: 'operation-authorization-permissions-id',
-                    url: '/operation/authorization/permissions',
+                    url: '/authorization/permissions',
 
-                }
-            ]
-        },
-        {
-            name: 'Example',
-            id: 'example-id',
-            type: 'group',
-            url: '/example',
-            children: [
-                {
-                    name: 'NestedList',
-                    id: 'nestedlist',
-                    url: '/operation/example/nested_list_example',
                 }
             ]
         }

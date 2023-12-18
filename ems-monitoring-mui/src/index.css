@@ -1,13 +1,15 @@
 html,
-body {
+body,
+#root {
+
     margin: 0;
-    height: 100%;
     width: 100%;
+    height: 100%;
+    font-family: 'Nanum Gothic', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-#root,
-.main {
-    margin: inherit;
-    height: inherit;
-    width: inherit;
+code {
+    font-family: 'Nanum Gothic', sans-serif;
 }
