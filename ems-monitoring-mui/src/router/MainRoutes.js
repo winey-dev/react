@@ -37,12 +37,10 @@ const MainRoutes = {
                 {
                     path: 'users',
                     element: <UsersPage />,
-                    children: [
-                        {
-                            path: 'create',
-                            element: <UserCreatePage />
-                        }
-                    ]
+                },
+                {
+                    path: 'users/create',
+                    element: <UserCreatePage />
                 },
                 {
                     path: 'permissions',

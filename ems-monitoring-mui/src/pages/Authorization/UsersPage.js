@@ -2,6 +2,7 @@ import { Box, Breadcrumbs, Button, Link, Table, TableBody, TableCell, TableConta
 import { Page, PageSection, PageHeader } from '../../components/Page';
 import styled from 'styled-components';
 import { getUsers } from '../../views/users';
+import { useNavigate } from 'react-router-dom';
 
 
 const LeftBox = styled(Box)`
@@ -24,6 +25,11 @@ const RightBox = styled(Box)`
 const UsersPage = () => {
 
     const users = getUsers;
+    const navigate = useNavigate();
+
+    const createHandle = () => {
+        navigate('/authorization/users/create');
+    }
 
     return (
         <Page title={"users"} sx={{ alignItems: 'center' }}>
@@ -39,7 +45,7 @@ const UsersPage = () => {
                     </Breadcrumbs>
                 </LeftBox>
                 <RightBox >
-                    <Button component={Link} to='/authorization/users/create' variant="contained" >
+                    <Button onClick={createHandle} variant="contained" >
                         Create
                     </Button>
                 </RightBox>

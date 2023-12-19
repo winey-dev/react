@@ -1,10 +1,13 @@
-import { Box } from '@mui/material';
+
+import { Page, PageSection } from '../Components/Page';
 
 const Profile = () => {
     return (
-        <Box>
-            Profile Page 입니다.
-        </Box>
+        <Page>
+            <PageSection>
+                Profile Page 입니다.
+            </PageSection>
+        </Page>
     )
 }
 

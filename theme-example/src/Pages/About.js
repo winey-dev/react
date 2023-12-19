@@ -1,10 +1,21 @@
-import { Box } from '@mui/material';
+import { Breadcrumbs, Link, Typography } from '@mui/material';
+import { Page, PageSection } from '../Components/Page';
 
 const About = () => {
     return (
-        <Box>
-            About Page 입니다.
-        </Box>
+        <Page title='about'>
+            <PageSection>
+                <Breadcrumbs aria-label="breadcrumb" sx={{ fontSize: '25px' }}>
+                    <Link underline="hover" color="inherit" href="/">
+                        Home
+                    </Link>
+                    <Typography color="text.primary" fontSize={'inherit'}>About</Typography>
+                </Breadcrumbs>
+            </PageSection>
+            <PageSection>
+                About Page 입니다.
+            </PageSection>
+        </Page>
     )
 }
 

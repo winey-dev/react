@@ -1,42 +1,25 @@
-import { AppBar, IconButton, Toolbar, useTheme } from '@mui/material'
+import { AppBar, IconButton, Toolbar, Typography, useTheme } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
+
 import styled from 'styled-components'
 
 
-// 컴포넌트 style 지정하기
-const WrapperHeader = styled(AppBar)`
-  &&& {
-    display: flex;
-    flex-direction: row;
-    position: static;
-    border-bottom: solid  ${({ theme }) => theme.palette.divider};
-
-  }
-`
-
-// html tag style 하기
-const HeaderItem = styled.div`
-    display: flex;
-    flex-grow: 1;
-`;
-
 const Header = (props) => {
-    const theme = useTheme()
-    const { onToggle } = props
+    const { onOpenHandler } = props
     // return (
-    //     <MyHeader >
-    //         <MyToolbar>
+    //     <WrapperHeader color={theme.palette.primary.main}>
+    //         <Toolbar>
     //             <HeaderItem> <IconButton sx={{ color: 'white' }} onClick={onToggle}> <MenuIcon /> </IconButton> </HeaderItem>
-    //         </MyToolbar>
-    //     </MyHeader >
+    //         </Toolbar>
+    //     </WrapperHeader>
     // )
-
     return (
-        <WrapperHeader theme={theme} >
+        <AppBar enableColorOnDark sx={{ display: 'flex', flexDirection: 'row', position: 'static', backgroundImage: 'none', boxShadow: 'none' }}>
             <Toolbar>
-                <HeaderItem> <IconButton sx={{ color: 'white' }} onClick={onToggle}> <MenuIcon /> </IconButton> </HeaderItem>
+                <IconButton sx={{ color: 'white' }} onClick={onOpenHandler}> <MenuIcon /> </IconButton>
+                <Typography > THEME EXAMPLE </Typography>
             </Toolbar>
-        </WrapperHeader>
+        </AppBar>
     )
 }
 export default Header;
