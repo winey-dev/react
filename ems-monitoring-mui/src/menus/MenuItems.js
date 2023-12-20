@@ -1,60 +1,119 @@
 import { IoHomeOutline } from "react-icons/io5";
+import { IoTerminalOutline } from "react-icons/io5";
+import { IoBuildOutline } from "react-icons/io5";
+import { IoDocumentAttachOutline } from "react-icons/io5";
 import { LuMonitorCheck } from "react-icons/lu";
 import { GrUserSettings } from "react-icons/gr";
 
-
 const OperationMenu = () => {
     const menus = [
-
         {
             name: 'Home',
-            id: 'operation-home-id',
+            id: 'home-id',
             url: "/home",
             icon: <IoHomeOutline />,
         },
         {
             name: 'Monitoring',
-            id: 'operation-monitoring-id',
+            id: 'monitoring-id',
             type: 'group',
-            group_id: 'operation-monitoring-group',
-            url: '/monitoring',
+            group_id: 'monitoring-group',
             icon: <LuMonitorCheck />,
             children: [
                 {
-                    name: 'Metrics',
-                    id: 'operation-monitoring-metrics-id',
-                    url: '/monitoring/metrics',
-
+                    name: 'Topolgy',
+                    id: 'monitoring-topolgy-id',
+                    url: '/monitoring/topolgy',
+                    //url: '#',
                 },
                 {
-                    name: 'Settings',
-                    id: 'operation-monitoring-settings-id',
-                    url: '/monitoring/settings',
+                    name: 'Metrics',
+                    id: 'monitoring-metrics-id',
+                    url: '/monitoring/metrics',
+                    //url: '#',
+                },
+                {
+                    name: 'Dashboards',
+                    id: 'monitoring-dashboards-id',
+                    url: '/monitoring/dashboards',
+                    //url: '#',
+                },
+                {
+                    name: 'Alerting',
+                    id: 'monitoring-alerting-id',
+                    url: '/monitoring/alerting',
+                    //url: '#',
                 },
             ]
         },
         {
-            name: 'Authorization',
-            id: 'operation-authorization-id',
+            name: 'Excute Task',
+            id: 'excute_task-id',
             type: 'group',
-            group_id: 'operation-authorization-group',
-            url: '/authorization',
+            group_id: 'excute_task-group',
+            icon: <IoTerminalOutline />,
+            children: [
+                {
+                    name: 'Excute',
+                    id: 'excute_task-excute-id',
+                    url: '/excute_task/excute',
+                    //url: '#',
+                },
+                {
+                    name: 'Batches',
+                    id: 'excute_task-batches-id',
+                    url: '/excute_task/batches',
+                    //url: '#',
+                },
+                {
+                    name: 'Taskes',
+                    id: 'excute_task-tasks-id',
+                    url: '/excute_task/tasks',
+                    //url: '#',
+                },
+                {
+                    name: 'Reports',
+                    id: 'excute_task-reports-id',
+                    url: '/excute_task/reports',
+                    //url: '#',
+                },
+            ]
+        },
+        {
+            name: 'User Management',
+            id: 'user_management-id',
+            type: 'group',
+            group_id: 'user_management-group',
             icon: <GrUserSettings />,
             children: [
                 {
                     name: 'Users',
-                    id: 'operation-authorization-users-id',
-                    url: '/authorization/users',
-
+                    id: 'user_management-users-id',
+                    url: '/user_management/users',
+                    //url: '#',
                 },
                 {
-                    name: 'Permissions',
-                    id: 'operation-authorization-permissions-id',
-                    url: '/authorization/permissions',
-
+                    name: 'Authorizations',
+                    id: 'user_management-authorizations-id',
+                    url: '/user_management/authorizations',
+                    //url: '#',
                 }
             ]
-        }
+        },
+        {
+            name: 'Project',
+            id: 'project-id',
+            url: "/project",
+            //url: '#',
+            icon: <IoDocumentAttachOutline />,
+        },
+        {
+            name: 'Builds',
+            id: 'builds-id',
+            url: "/builds",
+            //url: '#',
+            icon: <IoBuildOutline />,
+        },
     ]
     return menus;
 }

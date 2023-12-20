@@ -26,7 +26,6 @@ const MainLayout = () => {
     const [open, setOpen] = useState(true)
     const onOpenHandler = () => {
         setOpen(!open)
-
     }
 
     // Header SideMenu 구조로 작성

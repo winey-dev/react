@@ -1,6 +1,6 @@
-import { Page, PageSection } from '../../components/Page';
+import { Page, PageSection } from '../../../components/Page';
 
-const PermissionsPage = () => {
+const AuthorizationPage = () => {
     return (
         <Page title={"permissions"}>
             <PageSection>
@@ -16,4 +16,4 @@ const PermissionsPage = () => {
     )
 }
 
-export default PermissionsPage;
+export default AuthorizationPage;

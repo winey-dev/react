@@ -1,19 +1,21 @@
 import { Box, List, ListItemButton, ListItemIcon, ListItemText, useTheme } from '@mui/material';
 import MenuItems from '../MenuItems/MenuItem';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useState } from 'react';
 
 const MySideMenu = styled(Box)`
     display: ${({ open }) => open ? 'flex' : 'none'};
     flex-direction: row;
-
     max-width: ${({ open }) => open ? '20vw' : '0vw'};
     min-width: ${({ open }) => open ? '15vw' : '0vw'};
-
     background-color: ${({ theme }) => theme.palette.background};
     border-right: solid  ${({ theme }) => theme.palette.divider};
 `
+
+
+
+
 const SideMenu = (props) => {
     const theme = useTheme()
     const navigate = useNavigate();
@@ -24,6 +26,7 @@ const SideMenu = (props) => {
         setSelectedIndex(index)
         navigate(path);
     }
+
     const items = MenuItems.map((item, index) => (
         <ListItemButton
             key={item.name}

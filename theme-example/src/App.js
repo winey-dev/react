@@ -6,7 +6,7 @@ import { darkTheme, lightTheme } from './Themes';
 
 
 function App() {
-  const isDark = true;
+  const isDark = false;
   return (
     <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
       <CssBaseline />

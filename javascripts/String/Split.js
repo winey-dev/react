@@ -21,9 +21,10 @@ const ParseDefault = (elements) => {
 
 pathnames.forEach((pathname) => {
     const elements = pathname.split('/')
-    if (elements.length < 2) {
-        throw new Error("not path format ... input=", pathname)
-    }
+    console.log(elements)
+    // if (elements.length < 2) {
+    //     throw new Error("not path format ... input=", pathname)
+    // }
     switch (elements[1]) {
         case 'home':
             ParseHome(elements)

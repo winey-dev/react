@@ -25,17 +25,17 @@ const Body = styled(Box)`
 
 
 const MainLayout = () => {
-    const [toggle, setToggle] = useState('open')
-    const onToggle = () => {
-        toggle === 'open' ? setToggle('close') : setToggle('open')
-
+    const [open, setOpen] = useState(true)
+    const onOpenHandler = () => {
+        setOpen(!open)
     }
 
+    // Header SideMenu 구조로 작성
     return (
         <Main sx={MainStyle}>
-            <Header onToggle={onToggle} />
+            <Header onOpenHandler={onOpenHandler} />
             <Body >
-                <SideMenu toggle={toggle} />
+                <SideMenu open={open} />
                 <Outlet />
             </Body>
         </Main>

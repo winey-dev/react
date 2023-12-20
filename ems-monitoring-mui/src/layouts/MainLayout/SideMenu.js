@@ -1,41 +1,59 @@
 
 import { Box, Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText, useTheme } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { OperationMenu } from '../../menus/MenuItems';
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+// const WrapperSideMenu = styled(Box)`
+// display: ${({ open }) => open ? 'flex' : 'none'};
+// flex-direction: row;
+// max-width: ${({ open }) => open ? '20vw' : '0vw'};
+// min-width: ${({ open }) => open ? '15vw' : '0vw'};
+// background-color: ${({ theme }) => theme.palette.background};
+// border-right: solid 0.1rem ${({ theme }) => theme.palette.divider};
+// `
+
 const WrapperSideMenu = styled(Box)`
-    display: ${({ toggle }) => toggle === 'open' ? 'flex' : 'none'};
+    display: ${({ open }) => open ? 'flex' : 'none'};
     flex-direction: row;
-
-    max-width: ${({ toggle }) => toggle === 'open' ? '20vw' : '0vw'};
-    min-width: ${({ toggle }) => toggle === 'open' ? '18vw' : '0vw'};
-
-    background-color: ${({ theme }) => theme.palette.background};
-    border-right: solid 1px ${({ theme }) => theme.palette.divider};
+    max-width: ${({ open }) => open ? '20vw' : '0vw'};
+    min-width: ${({ open }) => open ? '15vw' : '0vw'};
+    background-color: ${({ theme }) => theme.palette.background.paper};
+    border-right: solid 0.1rem ${({ theme }) => theme.palette.divider};
 `
+
 const fontSize = {
-    fontSize: '18px'
+    fontSize: '18px',
+    fontWeight: '500'
 }
 
 const iconSize = {
-    fontSize: '20px'
+    fontSize: '20px',
 }
-const SideMenu = ({ toggle }) => {
+
+const SideMenu = ({ open }) => {
     const theme = useTheme()
-    const [open, setOpen] = useState([]);
+    const [groupOpen, setGroupOpen] = useState([]);
+    const navigate = useNavigate();
+    const [selectedID, setSelectedID] = useState('home-id')
+    const menuList = OperationMenu()
+
     const menuGroupClick = (index) => {
-        const copyOpen = [...open];
-        if (open[index] === undefined || !open[index]) {
-            copyOpen[index] = true
+        const copyGroupOpen = [...groupOpen];
+        if (groupOpen[index]) {
+            copyGroupOpen[index] = false
         } else {
-            copyOpen[index] = false
+            copyGroupOpen[index] = true
         }
-        setOpen(copyOpen)
+        setGroupOpen(copyGroupOpen)
     }
 
-    const menuList = OperationMenu()
+    const onClickEvent = (id, path) => {
+        setSelectedID(id)
+        navigate(path)
+    }
 
     const sideMenuList = menuList.map((menu, index) => {
         switch (menu.type) {
@@ -44,24 +62,41 @@ const SideMenu = ({ toggle }) => {
                     <>
                         {menu.children &&
                             <>
-                                <ListItemButton key={menu.id} onClick={() => menuGroupClick(index)}>
+                                <ListItemButton
+                                    key={menu.id}
+                                    onClick={() => menuGroupClick(index)}
+                                    sx={{
+                                        marginTop: '5px',
+                                    }}
+                                >
                                     {menu.icon && <ListItemIcon sx={iconSize}>
                                         {menu.icon}
                                     </ListItemIcon>}
                                     <ListItemText primary={menu.name} primaryTypographyProps={fontSize} />
-                                    {open[index] ? <ExpandLess /> : <ExpandMore />}
+                                    {groupOpen[index] ? <KeyboardArrowUpIcon fontSize='small' /> : <KeyboardArrowRightIcon fontSize='small' />}
                                 </ListItemButton>
 
-                                <Collapse in={open[index]} timeout="auto" unmountOnExit>
+                                <Collapse in={groupOpen[index]} timeout="auto" unmountOnExit>
                                     <List component="div" disablePadding>
                                         {menu.children.map((child) => (
-                                            <ListItemButton key={child.id} sx={{ pl: 4 }} component={NavLink} to={child.url}>
+                                            <ListItemButton
+                                                key={child.id}
+                                                selected={selectedID === child.id}
+                                                onClick={() => onClickEvent(child.id, child.url)}
+                                                sx={{
+                                                    pl: 4,
+                                                    marginTop: '4px',
+                                                    "&.Mui-selected": {
+                                                        borderLeft: "solid 0.5rem",
+                                                        borderLeftColor: theme.palette.primary.dark,
+                                                    },
+                                                }}
+                                            >
                                                 <ListItemText primary={child.name} />
                                             </ListItemButton>
                                         ))}
                                     </List>
                                 </Collapse>
-                                <Divider />
                             </>
                         }
                     </>
@@ -69,13 +104,23 @@ const SideMenu = ({ toggle }) => {
             default:
                 return (
                     <>
-                        <ListItemButton key={menu.id} component={NavLink} to={menu.url} >
+                        <ListItemButton
+                            key={menu.id}
+                            selected={selectedID === menu.id}
+                            onClick={() => onClickEvent(menu.id, menu.url)}
+                            sx={{
+                                marginTop: '5px',
+                                "&.Mui-selected": {
+                                    borderLeft: "solid 0.5rem",
+                                    borderLeftColor: theme.palette.primary.dark,
+                                },
+                            }}
+                        >
                             {menu.icon && <ListItemIcon sx={iconSize}>
                                 {menu.icon}
                             </ListItemIcon>}
                             <ListItemText primary={menu.name} primaryTypographyProps={fontSize} />
                         </ListItemButton >
-                        <Divider />
                     </>
 
 
@@ -84,8 +129,8 @@ const SideMenu = ({ toggle }) => {
     })
 
     return (
-        <WrapperSideMenu key={'wrapper-side-menu'} theme={theme} toggle={toggle}>
-            <List sx={{ width: '100%', padding: 0 }}>
+        <WrapperSideMenu key={'side-menu'} theme={theme} open={open}>
+            <List key={'side-menu'} sx={{ width: '100%', padding: 0 }}>
                 {sideMenuList && sideMenuList}
             </List>
         </WrapperSideMenu>

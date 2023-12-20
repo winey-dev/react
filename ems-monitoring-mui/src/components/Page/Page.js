@@ -7,12 +7,12 @@ import { useTheme } from '@emotion/react'
 
 
 const WrapperPage = styled(Box)`
-    margin: 4px;
+    margin: 0px;
+    margin-left: 5px;
     width: 100%;
-    background-color: ${({ theme }) => theme.palette.mode === 'dark' ? grey[900] : grey[100]} 
+    // background-color: ${({ theme }) => theme.palette.mode === 'dark' ? grey[900] : grey[50]} 
 `
 const Page = (props) => {
-
     const { title, sx } = props
     const theme = useTheme();
     useEffect(() => {

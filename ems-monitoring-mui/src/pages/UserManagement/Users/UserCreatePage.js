@@ -1,4 +1,4 @@
-import { Page, PageSection, PageHeader } from '../../components/Page';
+import { Page, PageSection, PageHeader } from '../../../components/Page';
 import { Breadcrumbs, Link, Typography } from '@mui/material';
 
 const UserCreatePage = () => {

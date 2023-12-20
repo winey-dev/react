@@ -1,7 +1,14 @@
 import MainLayout from '../layouts/MainLayout/MainLayout'
-import Pages from '../pages/pages';
 import { Navigate } from 'react-router-dom';
-import { PermissionsPage, UserCreatePage, UsersPage } from '../pages/Authorization';
+import HomePage from './Home';
+import UserManagementRoutes from './UserManagement/UserRoutes';
+import ProjectRoutes from './Project/ProjectRoutes';
+import BuildsRoutes from './Builds/BuildsRoutes';
+import ExcuteTaskRoutes from './ExcuteTask/ExcuteTaskRoutes';
+import MonitoringRoutes from './Monitoring/Monitoring';
+
+
+
 const MainRoutes = {
     path: '/',
     element: <MainLayout />,
@@ -12,42 +19,13 @@ const MainRoutes = {
         },
         {
             path: 'home',
-            element: <Pages name='home' />,
+            element: <HomePage />,
         },
-        {
-            path: 'monitoring',
-            children: [
-                {
-                    path: 'metrics',
-                    element: <Pages name='metrics' />
-                },
-                {
-                    path: 'alerts',
-                    element: <Pages name='alerts' />
-                },
-                {
-                    path: 'settings',
-                    element: <Pages name='settings' />
-                }
-            ]
-        },
-        {
-            path: 'authorization',
-            children: [
-                {
-                    path: 'users',
-                    element: <UsersPage />,
-                },
-                {
-                    path: 'users/create',
-                    element: <UserCreatePage />
-                },
-                {
-                    path: 'permissions',
-                    element: <PermissionsPage />
-                }
-            ],
-        }
+        MonitoringRoutes,
+        ExcuteTaskRoutes,
+        UserManagementRoutes,
+        ProjectRoutes,
+        BuildsRoutes,
     ]
 }
 

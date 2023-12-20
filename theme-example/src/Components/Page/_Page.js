@@ -2,8 +2,6 @@ import { useEffect } from 'react'
 import { Box } from '@mui/material'
 
 
-
-
 const Page = (props) => {
     const { title } = props
 
@@ -12,8 +10,10 @@ const Page = (props) => {
         titleElement.innerHTML = title
     }, [title])
 
+
     return (
         <Box sx={{ margin: '4px', width: '100%' }}>
+
             {props.children && props.children}
         </Box>
     )

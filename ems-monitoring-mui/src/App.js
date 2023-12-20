@@ -7,7 +7,7 @@ import ScrollTop from './components/ScrollTop';
 
 
 function App() {
-    const isDark = true;
+    const isDark = false;
     return (
         <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
             <CssBaseline />
@@ -16,10 +16,8 @@ function App() {
                     <Router />
                 </ScrollTop>
             </BrowserRouter>
-
         </ThemeProvider>
 
     );
 }
-
 export default App;
