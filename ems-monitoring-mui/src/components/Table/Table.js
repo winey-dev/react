@@ -1,15 +1,36 @@
-import { TableContainer, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
+import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
 
-const Table = (props) => {
-    const { id, object } = props
+const TableView = (props) => {
+    const { id, name, items, ignoreFields } = props
+    var rows = []
+    var columns = []
 
 
-    const columns = ["id", "name", "password", "identities"]
+    items.forEach(item => {
+        const keys = Object.keys(item).filter((v) => {
+            if (!ignoreFields || !ignoreFields.length || ignoreFields.length === 0) {
+                return true;
+            }
+            if (ignoreFields.indexOf(v) === -1) {
+                return true;
+            }
+            console.log(ignoreFields.indexOf(v))
+            console.log("ignore field find ", v)
+            return false;
+        })
+        if (columns.length === 0) {
+            columns = [...keys]
+        }
+        const row = []
+        columns.forEach((v) => {
+            row.push(item[v])
+        })
+        rows.push(row)
+    });
     console.log("columns", columns)
-    const rows = Object.entries(object)
     console.log("rows", rows)
     return (
-        <TableContainer>
+        <TableContainer id={name}>
             <Table aria-label={id}>
                 <TableHead>
                     <TableRow>
@@ -22,7 +43,7 @@ const Table = (props) => {
                     {rows.map((row, index) => (
                         <TableRow key={index}>
                             {row.map((value, valueIndex) => (
-                                <TableCell key={valueIndex}> {value[columns[valueIndex]]} </TableCell>
+                                <TableCell key={valueIndex}> {value} </TableCell>
                             ))}
                         </TableRow>
                     ))}
@@ -31,4 +52,4 @@ const Table = (props) => {
         </TableContainer>
     )
 }
-export default Table;
+export default TableView;

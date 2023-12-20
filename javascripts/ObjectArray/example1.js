@@ -14,3 +14,29 @@ const groupMergedIndex = ObjectArray.findIndex(value => value.name === "groupMer
 
 const multiFind = ObjectArray.findIndex(value => value.name === "group" && value.value === 30)
 console.log(categoryIndex,subCategoryIndex,groupIndex,groupMergedIndex)
+
+
+const getUsers = [
+  { id: 'admin', name: 'SeungMin Lee', password: 'admin', identities: 'local' },
+  { id: 'smlee_from_kakao', name: 'SeungMin Lee', password: 'admin', identities: 'kakao' },
+  { id: 'smlee_from_goggle', name: 'SeungMin Lee', password: 'admin', identities: 'goggle' },
+]
+
+const ignoreFields = ['password','identities']
+const rows = [];
+var columns = [];
+getUsers.forEach((object) => {
+  const keys = Object.keys(object).filter(key => ignoreFields.indexOf(key) < 0)
+
+  if (columns.length === 0) {
+    columns = [...keys]
+  }
+  const row = []
+  columns.forEach((v) => {
+    row.push(object[v])
+  })
+  rows.push(row)
+})
+
+console.log(columns)
+console.log(rows)

@@ -2,7 +2,7 @@ import { Breadcrumbs, Button, Link, Typography } from '@mui/material';
 import { Page, PageSection, PageHeader } from '../../../components/Page';
 
 import { useNavigate } from 'react-router-dom';
-import Table from '../../../components/Table/Table';
+import TableView from '../../../components/Table/Table';
 import { getUsers } from '../../../views/users';
 
 
@@ -18,7 +18,7 @@ const UsersPage = () => {
     return (
         <Page title={"users"} sx={{ alignItems: 'center' }}>
             <PageHeader sx={{ height: '5%' }}>
-                <Breadcrumbs aria-label="breadcrumb" sx={{ fontSize: '25px', marginRight: 'auto' }}>
+                <Breadcrumbs aria-label="breadcrumb" sx={{ fontSize: '25px', marginLeft: '25px', marginRight: 'auto' }}>
                     <Link underline="hover" color="inherit" href="/home">
                         Home
                     </Link>
@@ -32,7 +32,7 @@ const UsersPage = () => {
             </PageHeader>
 
             <PageSection sx={{ height: '90%' }}>
-                <Table id='user_table' object={users} />
+                <TableView id='user_table' name='users' items={users} ignoreFields={['password']}/>
                 {/* <TableContainer>
                     <Table sx={{ minWidth: 150 }} aria-label="users table">
                         <TableHead>
