@@ -8,7 +8,7 @@ const Header = (props) => {
     const { onOpenHandler } = props
 
     return (
-        <AppBar sx={{ display: 'flex', flexDirection: 'row', position: 'static', backgroundImage: 'none', boxShadow: 'none' }}>
+        <AppBar sx={{ display: 'flex', flexDirection: 'row', position: 'static', backgroundImage: 'none', boxShadow: 'none', maxHeight: '7vh' }}>
             <Toolbar sx={{ marginRight: 'auto' }}>
                 <IconButton sx={{ color: 'white', marginRight: '10px' }} onClick={onOpenHandler}> <MenuIcon /> </IconButton>
                 <Typography variant='h6'> SKT cMSS </Typography>

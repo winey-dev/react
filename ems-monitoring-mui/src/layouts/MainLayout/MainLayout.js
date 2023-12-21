@@ -8,7 +8,7 @@ import styled from 'styled-components';
 const MainStyle = {
     display: 'flex',
     flexDirection: 'column',
-    height: '100%',
+    height: '100vh',
 }
 
 const Main = styled(Box)`
@@ -34,7 +34,7 @@ const MainLayout = () => {
     return (
         <Main sx={MainStyle}>
             <Header onOpenHandler={onOpenHandler} />
-            <Body >
+            <Body sx={{ maxHeight: '93vh' }}>
                 <SideMenu open={open} />
                 <Outlet />
             </Body>

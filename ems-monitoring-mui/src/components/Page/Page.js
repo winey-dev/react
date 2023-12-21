@@ -10,6 +10,7 @@ const WrapperPage = styled(Box)`
     margin: 0px;
     margin-left: 5px;
     width: 100%;
+    height: 80%;
     // background-color: ${({ theme }) => theme.palette.mode === 'dark' ? grey[900] : grey[50]} 
 `
 const Page = (props) => {

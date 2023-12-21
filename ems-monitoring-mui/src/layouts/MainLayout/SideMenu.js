@@ -18,6 +18,7 @@ import styled from 'styled-components';
 const WrapperSideMenu = styled(Box)`
     display: ${({ open }) => open ? 'flex' : 'none'};
     flex-direction: row;
+    height: 100%;
     max-width: ${({ open }) => open ? '20vw' : '0vw'};
     min-width: ${({ open }) => open ? '15vw' : '0vw'};
     background-color: ${({ theme }) => theme.palette.background.paper};
@@ -129,7 +130,29 @@ const SideMenu = ({ open }) => {
     })
 
     return (
-        <WrapperSideMenu key={'side-menu'} theme={theme} open={open}>
+        <WrapperSideMenu
+            key={'side-menu'}
+            theme={theme}
+            open={open}
+            sx={{
+                overflow: "auto",
+                scrollbarWidth: 'thin',
+                '&::-webkit-scrollbar': {
+                    width: '10px',
+                    borderRadius: '100px',
+                },
+                '&::-webkit-scrollbar-track': {
+                    background: "#f1f1f1",
+                    borderRadius: '100px',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                    backgroundColor: '#888',
+                    borderRadius: '100px',
+                },
+                '&::-webkit-scrollbar-thumb:hover': {
+                    background: '#555'
+                }
+            }}>
             <List key={'side-menu'} sx={{ width: '100%', padding: 0 }}>
                 {sideMenuList && sideMenuList}
             </List>

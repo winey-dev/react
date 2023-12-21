@@ -2,15 +2,32 @@ import { Breadcrumbs, Button, Link, Typography } from '@mui/material';
 import { Page, PageSection, PageHeader } from '../../../components/Page';
 
 import { useNavigate } from 'react-router-dom';
-import TableView from '../../../components/Table/Table';
+import TableView from '../../../components/Table/TableView';
 import { getUsers } from '../../../views/users';
+import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary';
+import { useState } from 'react';
 
-
+const ErrorFallBack = ({ error, resetErrorBoundary }) => {
+    return (
+        <div>
+            <h1>An error occurred: {error.message}</h1>
+            <button onClick={resetErrorBoundary}>Try again</button>
+        </div>
+    )
+}
 const UsersPage = () => {
-
-    const users = getUsers
+    const [users, setUsers] = useState();
+    const handleError = useErrorBoundary();
     const navigate = useNavigate();
 
+    try {
+        const newUsers = getUsers();
+        if (newUsers) {
+            setUsers(newUsers);
+        }
+    } catch (error) {
+        handleError(error)
+    }
     const createHandle = () => {
         navigate('/user_management/users/create');
     }
@@ -32,30 +49,9 @@ const UsersPage = () => {
             </PageHeader>
 
             <PageSection sx={{ height: '90%' }}>
-                <TableView id='user_table' name='users' items={users} ignoreFields={['password']}/>
-                {/* <TableContainer>
-                    <Table sx={{ minWidth: 150 }} aria-label="users table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>ID</TableCell>
-                                <TableCell>Name</TableCell>
-                                <TableCell>Identities</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {users.map((row) => (
-                                <TableRow
-                                    key={row.id}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
-                                    <TableCell> {row.id} </TableCell>
-                                    <TableCell> {row.name} </TableCell>
-                                    <TableCell> {row.identities} </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer> */}
+                <ErrorBoundary FallbackComponent={ErrorFallBack}>
+                    <TableView id='user_table' name='users' items={users} ignoreFields={['password']} />
+                </ErrorBoundary>
             </PageSection>
         </Page>
     )

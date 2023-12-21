@@ -3,7 +3,7 @@ import { IoTerminalOutline } from "react-icons/io5";
 import { IoBuildOutline } from "react-icons/io5";
 import { IoDocumentAttachOutline } from "react-icons/io5";
 import { LuMonitorCheck } from "react-icons/lu";
-import { GrUserSettings } from "react-icons/gr";
+import { GrDocumentUser, GrUserSettings } from "react-icons/gr";
 
 const OperationMenu = () => {
     const menus = [
@@ -97,6 +97,30 @@ const OperationMenu = () => {
                     id: 'user_management-authorizations-id',
                     url: '/user_management/authorizations',
                     //url: '#',
+                }
+            ]
+        },
+        {
+            name: 'History',
+            id: 'history-id',
+            type: 'group',
+            group_id: 'history-group',
+            icon: <GrDocumentUser />,
+            children: [
+                {
+                    name: 'Audit',
+                    id: 'history-audit-id',
+                    url: '#',
+                },
+                {
+                    name: 'Authorization',
+                    id: 'history-authorization-id',
+                    url: '#',
+                },
+                {
+                    name: 'Excute Task',
+                    id: 'history-excute_task-id',
+                    url: '#',
                 }
             ]
         },
